@@ -1,0 +1,389 @@
+set nocompatible 
+
+"===================Tips========================="
+"==ctags=="
+"C-] - go to definition
+"C-T - Jump back from the definition.
+"C-W -> ] * Open the definition in a horizontal split
+":ta    - Search the tag
+"ctags for cpp_std and qt cpp
+"autocmd FileType cpp set tags+=~/.vim/tags/cpp
+"autocmd FileType cpp set tags+=~/.vim/tags/qt4
+"
+autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
+autocmd FileType c,cpp set tags+=~/.ctag_files/lsm_c
+autocmd FileType cpp set tags+=~/.ctag_files/qt5
+autocmd FileType c,cpp set tags+=./tags;/
+
+"alt-]  * open the definition in a vertical split
+
+map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+"regenerate ctags for current folder and recursively 
+"--extra=+q is for C++ to qualify member function/variable with its class
+"type. 
+function! s:Cregen()
+    execute ":!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q ."
+endfunction
+nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
+
+"
+"==copy=="
+"Need vim --version has "+xterm_clipboard", RHEL 6 don't
+"%y *   copy to X11 clipboard
+"*p     paste X11 clipboard
+"==visual selection=="
+"Ctrl-v for a vertical block
+
+"==shortcuts=="
+"K	#jump to the manpage of it
+"C-O #jump to last cursor location
+"C-i #jump to next cursor location
+"Toggle case 'HellO' to 'hELLo' with g~ then a movement.
+"Uppercase 'HellO' to 'HELLO' with gU then a movement.
+"Lowercase 'HellO' to 'hello' with gu then a movement.
+
+"==folding=="
+"za toggle
+"zA toggle all level
+"zr reduces one fold level
+"zR open all fold
+"zm fold one more level
+"zM clode all folds
+
+"==cscope=="
+"0 or s: Find this C symbol
+"1 or g: Find this definition
+"2 or d: Find functions called by this function
+"3 or c: Find functions calling this function
+"4 or t: Find this text string
+"6 or e: Find this egrep pattern
+"7 or f: Find this file
+"8 or i: Find files #including this file
+
+"==general=="
+" % stand for current file name, useful for vs
+" set nomodifiable # stop entering modify/edit mode. "vim -M" is the same
+" to stop vim to read configurations, use "vim -u NONE"
+
+"==file specified vim configuration=="
+" Add this line at the end of file. :help modeline
+"       # vim: set filetype=config:
+
+"== spell check =="
+" set spell
+" zg    add to word list
+" z=    list all sugests
+" ]s    next spell check
+" zug   undo zg
+" to update spell after manual edit:
+" silent mkspell! ~/.vim/spell/en.utf-8.add
+
+" disable modline for security
+set nomodeline
+
+" Disable backup auto creating
+set nobackup
+
+" use visual bell instead of beeping
+set vb
+" don't indent when pasting
+:set pastetoggle=<F1>
+
+" set backspace can remove indent and works
+set bs=2
+
+" disable incremental search
+set incsearch
+
+" disable highlight search
+set nohlsearch
+
+
+" disable mouse
+set mouse=
+
+" color theme
+set t_Co=256
+"colorscheme elflord
+
+" syntax highlighting
+set bg=light
+syntax on
+map <F5>    :syntax sync fromstart<CR>
+
+" Tell vim to remember certain things when we exit
+"  '10  :  marks will be remembered for up to 10 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :20  :  up to 20 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+"set viminfo='10,\"100,:20,%,n~/.viminfo
+" Restore cursor and folds when load for certain type of file
+" :mksession is more powerfull. Will check later
+"autocmd Filetype config,sh,perl,c,cpp autocmd BufWinLeave ?* mkview
+"autocmd Filetype config,sh,perl,c,cpp autocmd BufWinEnter ?* silent loadview
+
+"indent issue
+set smartindent
+set autoindent
+
+set ts=4
+set sts=4
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+"auto remove whitespace at the end of line before :w,
+"it also save email signiture spliter "-- "
+function s:RemoveWhiteSpace()
+    let save_cursor = getpos(".")
+    %s/\s\+$//e
+    if &filetype == 'mail'
+        %s/^--$/-- /e
+        %s/^> --$/> -- /e
+    endif
+    call setpos(".", save_cursor)
+endfunction
+autocmd Filetype perl,c,cpp,python,sh,wiki,markdown,nroff autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
+
+"soft colorcolumn, vim 7.3+ only, short cmd: set cc=78
+set tw=78
+if version >=703
+    "autocmd Filetype c,cpp,perl,python,sh,expect,mail,moin set colorcolumn=78
+    set colorcolumn=78
+endif
+
+"set hard word wrap at 72 for email
+set wrap
+autocmd Filetype markdown,diff,gitcommit set spell
+
+set nu
+" display
+set list
+set listchars=tab:>-,extends:>
+
+" keep 10 above for scroll down
+set scrolloff=10
+
+" autocomplet as bash
+set wildmode=longest,list
+set wildmenu
+
+
+map     <F12>   :set nohlsearch! hlsearch?<CR>
+map     <F10>   :%!xmllint --format --recover --encode UTF-8 -
+map     <F9>    :set cursorline! cursorline? <CR> :set cursorcolumn! cursorcolumn?<CR>
+map     <F8>    :setlocal foldmethod=syntax<CR> zR <CR> zm <CR> :echo 'syntax' <CR>
+map     <F7>    :setlocal foldmethod=indent<CR> zR <CR> zm <CR> :echo 'indent' <CR>
+"map     <F2>    "ay<CR>:%d<CR>gg"aP<CR>
+map     <F2>    :set nospell! spell?<CR>
+nnoremap <silent> <leader>n :set nonu! nu?<cr>
+nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
+
+nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
+
+function! s:InsertRedHatHeader()
+    execute ":r ~/.vim/redhat_header.sh"
+endfunction
+command Irhh :call <SID>InsertRedHatHeader()
+
+function! s:InsertRedHatHeaderG3()
+    execute ":r ~/.vim/template/rh_gpl3.txt"
+endfunction
+command Irhhg3 :call <SID>InsertRedHatHeaderG3()
+
+function! s:InsertConvertTimeStrPy()
+    execute ":r ~/.vim/convert_time_str.py"
+endfunction
+command Icts :call <SID>InsertConvertTimeStrPy()
+
+function! s:InsertReadConfigPy()
+    execute ":r ~/.vim/read_conf.py"
+endfunction
+command Irc :call <SID>InsertReadConfigPy()
+
+function! s:InsertPersonalHeader()
+    execute ":r ~/.vim/personal_header.sh"
+endfunction
+command Iph :call <SID>InsertPersonalHeader()
+
+function! s:InsertPersonalHeaderC()
+    execute ":r ~/.vim/personal_header.c"
+endfunction
+command Iphc :call <SID>InsertPersonalHeaderC()
+
+function! s:InsertBashFunction(function_name)
+    let save_cursor = getpos(".")
+    let codes=system("sed -e s/FunctionName/"
+        \. shellescape(a:function_name)
+        \. "/g ~/.vim/function_sample.sh")
+    call append(".",split(codes,"\n"))
+    normal 
+    call setpos(".", save_cursor)
+    normal 4jw
+endfunction
+command! -nargs=1 Ibf :call <SID>InsertBashFunction('<args>')
+
+function! s:InsertPythonFunction(function_name)
+    let codes=system("sed -e s/FunctionName/"
+        \. shellescape(a:function_name)
+        \. "/g ~/.vim/template/function_sample.py")
+    call append(".",split(codes,"\n"))
+    normal 4jw
+endfunction
+command! -nargs=1 Iyf :call <SID>InsertPythonFunction('<args>')
+
+command! Jst :call g:Jsbeautify()
+
+"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+hi CursorLine   cterm=NONE ctermfg=white guibg=darkred guifg=white
+hi CursorColumn cterm=NONE ctermfg=white guibg=darkred guifg=white
+
+"For cscope
+if filereadable("cscope.out")
+    cs add cscope.out
+elseif $CSCOPE_DB != ""
+    cs add $CSCOPE_DB
+endif
+set csverb
+set cscopetag
+set cscopequickfix=s-,g-,c-,d-,t-,e-,f-,i-
+
+"Persistent undo (vim 7.3+)
+"set undodir=~/.vim/undodir
+"set undofile
+"set undolevels=1000 "maximum number of changes that can be undone
+"set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+
+
+"OmniCppComplete
+filetype plugin on
+set ofu=syntaxcomplete#Complete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 0 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
+
+"taglist
+let Tlist_Show_One_File = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Use_Right_Window = 0
+let Tlist_Auto_Open=1
+let Tlist_WinWidth = 34
+let Tlist_Compact_Format = 1
+let Tlist_Enable_Fold_Column = 0
+command Tl TlistToggle
+nnoremap <silent> <leader>t :TlistToggle<cr>
+autocmd Filetype perl,c,cpp,python,sh autocmd BufWritePre ?* :TlistUpdate
+
+if filereadable($VIM.'/st_perl.vim')
+    source $VIM.'/st_perl.vim'
+endif
+
+" DrawIt
+"   <left>       move and draw left
+"   <right>      move and draw right, inserting lines/space as needed
+"   <up>         move and draw up, inserting lines/space as needed
+"   <down>       move and draw down, inserting lines/space as needed
+"   <s-left>     move left
+"   <s-right>    move right, inserting lines/space as needed
+"   <s-up>       move up, inserting lines/space as needed
+"   <s-down>     move down, inserting lines/space as needed
+"   <space>      toggle into and out of erase mode
+"   >            draw -> arrow
+"   <            draw <- arrow
+"   ^            draw ^  arrow
+"   v            draw v  arrow
+"   <pgdn>       replace with a \, move down and right, and insert a \
+"   <end>        replace with a /, move down and left,  and insert a /
+"   <pgup>       replace with a /, move up   and right, and insert a /
+"   <home>       replace with a \, move up   and left,  and insert a \
+"   \>           draw fat -> arrow
+"   \<           draw fat <- arrow
+"   \^           draw fat ^  arrow
+"   \v           draw fat v  arrow
+"   \a           draw arrow based on corners of visual-block
+"   \b           draw box using visual-block selected region
+"   \e           draw an ellipse inside visual-block
+"   \f           fill a figure with some character
+"   \h           create a canvas for \a \b \e \l
+"   \l           draw line based on corners of visual block
+"   \s           adds spaces to canvas
+"   <leftmouse>  select visual block
+"<s-leftmouse>  drag and draw with current brush (register)
+"   \ra ... \rz  replace text with given brush/register
+"   \pa ...      like \ra ... \rz, except that blanks are considered
+"                to be transparent
+
+
+" Markdown
+au BufRead,BufNewFile *.md set filetype=markdown
+
+
+" Update konsole tab with current edit filename
+autocmd BufReadPost * :silent !/home/fge/bin/update_konsole_tab set 'vim: %:t'
+autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
+
+function! s:SetKRCodeStyle()
+    set autoindent
+    set cindent
+    set shiftwidth=4
+    set cc=80 textwidth=80
+    set expandtab
+    set tabstop=8
+    set cinoptions=(0,:0,l1,t0,L3
+    set wrap
+    set formatoptions=tcroq
+endfunction
+command Csk :call <SID>SetKRCodeStyle()
+
+function! s:SetLinuxCodeStyle()
+    setlocal tabstop=8
+    setlocal softtabstop=8
+    setlocal shiftwidth=8
+    setlocal textwidth=80 cc=80
+    setlocal wrap
+    setlocal noexpandtab
+    setlocal cindent
+    setlocal formatoptions=tcqlron
+    setlocal cinoptions=:0,l1,t0,g0,(0
+    setlocal wildignore+=*.ko,*.mod.c,*.order,modules.builtin
+    syn keyword cOperator likely unlikely
+    syn keyword cType u8 u16 u32 u64 s8 s16 s32 s64
+    highlight default link LinuxError ErrorMsg
+    syn match LinuxError / \+\ze\t/     " spaces before tab
+    syn match LinuxError /\s\+$/        " trailing whitespaces
+    syn match LinuxError /\%81v.\+/     " virtual column 81 and more
+endfunction
+command Csl :call <SID>SetLinuxCodeStyle()
+
+function! s:SetGnuCodeStyle()
+    setlocal cindent
+    setlocal cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1
+    setlocal shiftwidth=2
+    setlocal softtabstop=2
+    setlocal expandtab
+    setlocal textwidth=79 cc=79
+    setlocal wrap
+    setlocal fo-=ro fo+=cql
+endfunction
+command Csg :call <SID>SetGnuCodeStyle()
+
+function! s:ImportLicense(license_name)
+    let file_path="~/.vim/license/" . a:license_name . ".txt"
+    execute 'r ' . file_path
+endfunction
+command! -nargs=1 L :call <SID>ImportLicense('<args>')
+
+autocmd Filetype c,cpp,make :call <SID>SetKRCodeStyle()
+au FileType make setlocal noexpandtab
+au BufRead,BufNewFile *.am setlocal noexpandtab
