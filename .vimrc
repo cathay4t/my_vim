@@ -330,12 +330,15 @@ endif
 au BufRead,BufNewFile *.md set filetype=markdown
 
 function! s:UpdateKonsoleTab()
-    execute ":silent !/home/fge/bin/update_konsole_tab set '%:t'"
-    execute ':redraw!'
+    if expand("%:t") != '__Tag_List__'
+        execute ":silent !/home/fge/bin/update_konsole_tab set '%:t'"
+        execute ':redraw!'
+    endif
 endfunction
 
 " Update konsole tab with current edit filename
 autocmd BufReadPost * :call <SID>UpdateKonsoleTab()
+autocmd WinEnter * :call <SID>UpdateKonsoleTab()
 autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
