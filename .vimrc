@@ -125,6 +125,7 @@ map <F5>    :syntax sync fromstart<CR>
 "autocmd Filetype config,sh,perl,c,cpp autocmd BufWinEnter ?* silent loadview
 
 "indent issue
+filetype plugin indent on
 set smartindent
 set autoindent
 
@@ -145,7 +146,7 @@ function s:RemoveWhiteSpace()
     endif
     call setpos(".", save_cursor)
 endfunction
-autocmd Filetype perl,c,cpp,python,sh,wiki,markdown,nroff autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
+autocmd Filetype xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
 
 "soft colorcolumn, vim 7.3+ only, short cmd: set cc=78
 set tw=78
@@ -183,15 +184,15 @@ nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
 nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
 
-function! s:InsertRedHatHeader()
-    execute ":r ~/.vim/redhat_header.sh"
+function! s:InsertLGPL()
+    execute ":r ~/.vim/license/lgpl.txt"
 endfunction
-command Irhh :call <SID>InsertRedHatHeader()
+command Ilgpl :call <SID>InsertLGPL()
 
-function! s:InsertRedHatHeaderG3()
-    execute ":r ~/.vim/template/rh_gpl3.txt"
+function! s:InsertGPL()
+    execute ":r ~/.vim/license/gpl.txt"
 endfunction
-command Irhhg3 :call <SID>InsertRedHatHeaderG3()
+command Igpl :call <SID>InsertGPL()
 
 function! s:InsertConvertTimeStrPy()
     execute ":r ~/.vim/convert_time_str.py"
@@ -278,7 +279,7 @@ let Tlist_Show_One_File = 1
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_Use_Right_Window = 0
 let Tlist_Auto_Open=1
-let Tlist_WinWidth = 34
+let Tlist_WinWidth = 38
 let Tlist_Compact_Format = 1
 let Tlist_Enable_Fold_Column = 0
 command Tl TlistToggle
@@ -328,10 +329,15 @@ endif
 " Markdown
 au BufRead,BufNewFile *.md set filetype=markdown
 
+function! s:UpdateKonsoleTab()
+    execute ":silent !/home/fge/bin/update_konsole_tab set '%:t'"
+    execute ':redraw!'
+endfunction
 
 " Update konsole tab with current edit filename
-autocmd BufReadPost * :silent !/home/fge/bin/update_konsole_tab set 'vim: %:t'
+autocmd BufReadPost * :call <SID>UpdateKonsoleTab()
 autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
+nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
 function! s:SetKRCodeStyle()
     set autoindent
@@ -384,6 +390,6 @@ function! s:ImportLicense(license_name)
 endfunction
 command! -nargs=1 L :call <SID>ImportLicense('<args>')
 
-autocmd Filetype c,cpp,make :call <SID>SetKRCodeStyle()
+autocmd Filetype c,cpp :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
