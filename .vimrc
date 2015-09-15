@@ -80,7 +80,7 @@ nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 " silent mkspell! ~/.vim/spell/en.utf-8.add
 
 " disable modline for security
-set nomodeline
+set modeline
 
 " Disable backup auto creating
 set nobackup
@@ -91,7 +91,7 @@ set vb
 :set pastetoggle=<F1>
 
 " set backspace can remove indent and works
-set bs=2
+set backspace=indent,eol,start
 
 " disable incremental search
 set incsearch
@@ -99,16 +99,15 @@ set incsearch
 " disable highlight search
 set nohlsearch
 
-
 " disable mouse
-set mouse=
+set mouse=a
 
 " color theme
 set t_Co=256
-"colorscheme elflord
+
+set background=light
 
 " syntax highlighting
-set bg=light
 syntax on
 map <F5>    :syntax sync fromstart<CR>
 
@@ -129,11 +128,11 @@ filetype plugin indent on
 set smartindent
 set autoindent
 
-set ts=4
-set sts=4
-set tabstop=4
-set shiftwidth=4
-set expandtab
+"set ts=4
+"set sts=4
+"set tabstop=4
+"set shiftwidth=4
+"set expandtab
 
 "auto remove whitespace at the end of line before :w,
 "it also save email signiture spliter "-- "
@@ -149,10 +148,10 @@ endfunction
 autocmd Filetype xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
 
 "soft colorcolumn, vim 7.3+ only, short cmd: set cc=78
-set tw=78
+"set tw=78
 if version >=703
     "autocmd Filetype c,cpp,perl,python,sh,expect,mail,moin set colorcolumn=78
-    set colorcolumn=78
+    setlocal colorcolumn=78
 endif
 
 "set hard word wrap at 72 for email
@@ -160,7 +159,7 @@ set wrap
 autocmd Filetype markdown,diff,gitcommit set spell
 
 set nu
-" display
+" display tab as >-------
 set list
 set listchars=tab:>-,extends:>
 
@@ -171,18 +170,20 @@ set scrolloff=10
 set wildmode=longest,list
 set wildmenu
 
+function! s:copy_visual_selection_to_xclip()
+  let [s:lnum1, s:col1] = getpos("'<")[1:2]
+  let [s:lnum2, s:col2] = getpos("'>")[1:2]
+  :exe ':silent'.s:lnum1.','.s:lnum2'w !xclip -selection c'
+endfunction
 
 map     <F12>   :set nohlsearch! hlsearch?<CR>
-map     <F10>   :%!xmllint --format --recover --encode UTF-8 -
 map     <F9>    :set cursorline! cursorline? <CR> :set cursorcolumn! cursorcolumn?<CR>
-map     <F8>    :setlocal foldmethod=syntax<CR> zR <CR> zm <CR> :echo 'syntax' <CR>
-map     <F7>    :setlocal foldmethod=indent<CR> zR <CR> zm <CR> :echo 'indent' <CR>
-"map     <F2>    "ay<CR>:%d<CR>gg"aP<CR>
 map     <F2>    :set nospell! spell?<CR>
 nnoremap <silent> <leader>n :set nonu! nu?<cr>
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
 nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
+vnoremap <silent> <leader>c :call <SID>copy_visual_selection_to_xclip()<cr>
 
 function! s:InsertLGPL()
     execute ":r ~/.vim/license/lgpl.txt"
@@ -194,48 +195,46 @@ function! s:InsertGPL()
 endfunction
 command Igpl :call <SID>InsertGPL()
 
-function! s:InsertConvertTimeStrPy()
-    execute ":r ~/.vim/convert_time_str.py"
-endfunction
-command Icts :call <SID>InsertConvertTimeStrPy()
-
-function! s:InsertReadConfigPy()
-    execute ":r ~/.vim/read_conf.py"
-endfunction
-command Irc :call <SID>InsertReadConfigPy()
-
-function! s:InsertPersonalHeader()
-    execute ":r ~/.vim/personal_header.sh"
-endfunction
-command Iph :call <SID>InsertPersonalHeader()
-
-function! s:InsertPersonalHeaderC()
-    execute ":r ~/.vim/personal_header.c"
-endfunction
-command Iphc :call <SID>InsertPersonalHeaderC()
-
-function! s:InsertBashFunction(function_name)
-    let save_cursor = getpos(".")
-    let codes=system("sed -e s/FunctionName/"
-        \. shellescape(a:function_name)
-        \. "/g ~/.vim/function_sample.sh")
-    call append(".",split(codes,"\n"))
-    normal 
-    call setpos(".", save_cursor)
-    normal 4jw
-endfunction
-command! -nargs=1 Ibf :call <SID>InsertBashFunction('<args>')
-
-function! s:InsertPythonFunction(function_name)
-    let codes=system("sed -e s/FunctionName/"
-        \. shellescape(a:function_name)
-        \. "/g ~/.vim/template/function_sample.py")
-    call append(".",split(codes,"\n"))
-    normal 4jw
-endfunction
-command! -nargs=1 Iyf :call <SID>InsertPythonFunction('<args>')
-
-command! Jst :call g:Jsbeautify()
+"function! s:InsertConvertTimeStrPy()
+"    execute ":r ~/.vim/convert_time_str.py"
+"endfunction
+"command Icts :call <SID>InsertConvertTimeStrPy()
+"
+"function! s:InsertReadConfigPy()
+"    execute ":r ~/.vim/read_conf.py"
+"endfunction
+"command Irc :call <SID>InsertReadConfigPy()
+"
+"function! s:InsertPersonalHeader()
+"    execute ":r ~/.vim/personal_header.sh"
+"endfunction
+"command Iph :call <SID>InsertPersonalHeader()
+"
+"function! s:InsertPersonalHeaderC()
+"    execute ":r ~/.vim/personal_header.c"
+"endfunction
+"command Iphc :call <SID>InsertPersonalHeaderC()
+"
+"function! s:InsertBashFunction(function_name)
+"    let save_cursor = getpos(".")
+"    let codes=system("sed -e s/FunctionName/"
+"        \. shellescape(a:function_name)
+"        \. "/g ~/.vim/function_sample.sh")
+"    call append(".",split(codes,"\n"))
+"    normal 
+"    call setpos(".", save_cursor)
+"    normal 4jw
+"endfunction
+"command! -nargs=1 Ibf :call <SID>InsertBashFunction('<args>')
+"
+"function! s:InsertPythonFunction(function_name)
+"    let codes=system("sed -e s/FunctionName/"
+"        \. shellescape(a:function_name)
+"        \. "/g ~/.vim/template/function_sample.py")
+"    call append(".",split(codes,"\n"))
+"    normal 4jw
+"endfunction
+"command! -nargs=1 Iyf :call <SID>InsertPythonFunction('<args>')
 
 "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
@@ -258,14 +257,13 @@ set cscopequickfix=s-,g-,c-,d-,t-,e-,f-,i-
 "set undolevels=1000 "maximum number of changes that can be undone
 "set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
-
 "OmniCppComplete
 filetype plugin on
 set ofu=syntaxcomplete#Complete
 let OmniCpp_NamespaceSearch = 1
 let OmniCpp_GlobalScopeSearch = 1
 let OmniCpp_ShowAccess = 1
-let OmniCpp_ShowPrototypeInAbbr = 0 " show function parameters
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
 let OmniCpp_MayCompleteDot = 1 " autocomplete after .
 let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
 let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
@@ -285,10 +283,6 @@ let Tlist_Enable_Fold_Column = 0
 command Tl TlistToggle
 nnoremap <silent> <leader>t :TlistToggle<cr>
 autocmd Filetype perl,c,cpp,python,sh autocmd BufWritePre ?* :TlistUpdate
-
-if filereadable($VIM.'/st_perl.vim')
-    source $VIM.'/st_perl.vim'
-endif
 
 " DrawIt
 "   <left>       move and draw left
@@ -325,7 +319,6 @@ endif
 "   \pa ...      like \ra ... \rz, except that blanks are considered
 "                to be transparent
 
-
 " Markdown
 au BufRead,BufNewFile *.md set filetype=markdown
 
@@ -343,15 +336,16 @@ autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
 function! s:SetKRCodeStyle()
-    set autoindent
-    set cindent
-    set shiftwidth=4
-    set cc=80 textwidth=80
-    set expandtab
-    set tabstop=8
-    set cinoptions=(0,:0,l1,t0,L3
-    set wrap
-    set formatoptions=tcroq
+    setlocal autoindent
+    setlocal cindent
+    setlocal shiftwidth=4
+    setlocal cc=80 textwidth=80
+    setlocal expandtab
+    setlocal tabstop=8
+    setlocal softtabstop=4
+    setlocal cinoptions=(0,:0,l1,t0,L3
+    setlocal wrap
+    setlocal formatoptions=tcroq
 endfunction
 command Csk :call <SID>SetKRCodeStyle()
 
@@ -393,6 +387,6 @@ function! s:ImportLicense(license_name)
 endfunction
 command! -nargs=1 L :call <SID>ImportLicense('<args>')
 
-autocmd Filetype c,cpp :call <SID>SetKRCodeStyle()
+autocmd Filetype gitcommit,config,sh,c,cpp :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
