@@ -79,7 +79,7 @@ nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 " to update spell after manual edit:
 " silent mkspell! ~/.vim/spell/en.utf-8.add
 
-" disable modline for security
+" enable modline
 set modeline
 
 " Disable backup auto creating
@@ -99,8 +99,11 @@ set incsearch
 " disable highlight search
 set nohlsearch
 
-" disable mouse
+" anable mouse
 set mouse=a
+
+" set clipbrad to system clipboard
+" set clipboard=unnamedplus
 
 " color theme
 set t_Co=256
@@ -170,20 +173,14 @@ set scrolloff=10
 set wildmode=longest,list
 set wildmenu
 
-function! s:copy_visual_selection_to_xclip()
-  let [s:lnum1, s:col1] = getpos("'<")[1:2]
-  let [s:lnum2, s:col2] = getpos("'>")[1:2]
-  :exe ':silent'.s:lnum1.','.s:lnum2'w !xclip -selection c'
-endfunction
-
 map     <F12>   :set nohlsearch! hlsearch?<CR>
 map     <F9>    :set cursorline! cursorline? <CR> :set cursorcolumn! cursorcolumn?<CR>
 map     <F2>    :set nospell! spell?<CR>
 nnoremap <silent> <leader>n :set nonu! nu?<cr>
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
-nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
-vnoremap <silent> <leader>c :call <SID>copy_visual_selection_to_xclip()<cr>
+nnoremap <silent> <leader>c :%y+<cr>
+vnoremap <silent> <leader>c "+y
 
 function! s:InsertLGPL()
     execute ":r ~/.vim/license/lgpl.txt"
