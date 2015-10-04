@@ -384,6 +384,6 @@ function! s:ImportLicense(license_name)
 endfunction
 command! -nargs=1 L :call <SID>ImportLicense('<args>')
 
-autocmd Filetype gitcommit,config,sh,c,cpp :call <SID>SetKRCodeStyle()
+autocmd Filetype gitcommit,config,sh,c,cpp,perl :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
