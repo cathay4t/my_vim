@@ -387,3 +387,5 @@ command! -nargs=1 L :call <SID>ImportLicense('<args>')
 autocmd Filetype gitcommit,config,sh,c,cpp,perl :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
+
+autocmd VimLeave * call system("xclip -o | xclip -selection c")
