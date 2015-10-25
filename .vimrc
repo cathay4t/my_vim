@@ -273,7 +273,7 @@ set completeopt=menuone,menu,longest,preview
 let Tlist_Show_One_File = 1
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_Use_Right_Window = 0
-let Tlist_Auto_Open=1
+let Tlist_Auto_Open=0
 let Tlist_WinWidth = 38
 let Tlist_Compact_Format = 1
 let Tlist_Enable_Fold_Column = 0
@@ -384,7 +384,7 @@ function! s:ImportLicense(license_name)
 endfunction
 command! -nargs=1 L :call <SID>ImportLicense('<args>')
 
-autocmd Filetype gitcommit,config,sh,c,cpp,perl :call <SID>SetKRCodeStyle()
+autocmd Filetype gitcommit,config,sh,c,cpp,perl,markdown :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
 
