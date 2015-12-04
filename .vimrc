@@ -327,10 +327,15 @@ function! s:UpdateKonsoleTab()
 endfunction
 
 " Update konsole tab with current edit filename
-autocmd BufReadPost * :call <SID>UpdateKonsoleTab()
-autocmd WinEnter * :call <SID>UpdateKonsoleTab()
-autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
-nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
+"autocmd BufReadPost * :call <SID>UpdateKonsoleTab()
+"autocmd WinEnter * :call <SID>UpdateKonsoleTab()
+"autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
+"nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
+
+let &titlestring = "vim: " . expand("%:t")
+if &term == "screen" || &term == "xterm"
+  set title
+endif
 
 function! s:SetKRCodeStyle()
     setlocal autoindent
