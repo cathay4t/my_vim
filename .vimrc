@@ -85,8 +85,13 @@ set modeline
 " Disable backup auto creating
 set nobackup
 
-" use visual bell instead of beeping
-set vb
+" no visual bell
+set novisualbell
+" No error bell 
+set noerrorbells
+" No flash the screen on error
+set t_vb=
+
 " don't indent when pasting
 :set pastetoggle=<F1>
 
