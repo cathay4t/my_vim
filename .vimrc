@@ -186,6 +186,8 @@ nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
 nnoremap <silent> <leader>c :%y+<cr>
 vnoremap <silent> <leader>c "+y
+nnoremap <silent> <leader>p "+gP
+vnoremap <silent> <leader>p "+gP
 
 function! s:InsertLGPL()
     execute ":r ~/.vim/license/lgpl.txt"
