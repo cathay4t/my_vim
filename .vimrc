@@ -104,8 +104,10 @@ set incsearch
 " disable highlight search
 set nohlsearch
 
-" anable mouse
+" Enable mouse
 set mouse=a
+" Disable mouse
+"set mouse=
 
 " set clipbrad to system clipboard
 " set clipboard=unnamedplus
@@ -188,6 +190,7 @@ nnoremap <silent> <leader>c :%y+<cr>
 vnoremap <silent> <leader>c "+y
 nnoremap <silent> <leader>p "+gP
 vnoremap <silent> <leader>p "+gP
+vnoremap <silent> <LeftRelease> "+y<LeftRelease>
 
 function! s:InsertLGPL()
     execute ":r ~/.vim/license/lgpl.txt"
@@ -339,7 +342,7 @@ endfunction
 "autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
-let &titlestring = "vim: " . expand("%:t")
+let &titlestring = expand("%:t")
 if &term == "screen" || &term == "xterm"
   set title
 endif
