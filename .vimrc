@@ -166,7 +166,7 @@ endif
 
 "set hard word wrap at 72 for email
 set wrap
-autocmd Filetype markdown,diff,gitcommit set spell
+autocmd Filetype markdown,diff,gitcommit,c,cpp,python,perl set spell
 
 set nu
 " display tab as >-------
