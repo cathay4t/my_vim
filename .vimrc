@@ -351,14 +351,23 @@ let g:_cs_linux=
     \ g:_cs_linux_73_0
 
 let g:_mode_line_c_linux = [""]
-call add (g:_mode_line_c_linux, '/* vim: set '.g:_cs_linux_0.' : */')
-call add (g:_mode_line_c_linux, '/* vim: set '.g:_cs_linux_1.' : */')
-call add (g:_mode_line_c_linux, '/* vim>702: set '.g:_cs_linux_73_0.' : */')
+call add (g:_mode_line_c_linux,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_linux_0, ":", "\\\\:", "g").
+    \ ' : */')
+call add (g:_mode_line_c_linux,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_linux_1, ":", "\\\\:", "g").
+    \ ' : */')
+call add (g:_mode_line_c_linux,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_linux_73_0, ":", "\\\\:", "g").
+    \ ' : */')
 
 let g:_cs_kr_0 =
-    \ 'ts=8 sts=4 sw=4 tw=80 wrap et fo=tcroq'
+    \ 'ts=8 sts=4 sw=4 tw=80 wrap et'
 let g:_cs_kr_1 =
-    \ 'cindent cinoptions=(0,:0,l1,t0,L3'
+    \ 'fo=tcroq cindent cinoptions=(0,:0,l1,t0,L3'
 let g:_cs_kr_73_0  =
     \ 'cc=80'
 let g:_cs_kr=
@@ -367,9 +376,18 @@ let g:_cs_kr=
     \ g:_cs_kr_73_0
 
 let g:_mode_line_c_kr = [""]
-call add (g:_mode_line_c_kr, '/* vim: set '.g:_cs_kr_0.' : */')
-call add (g:_mode_line_c_kr, '/* vim: set '.g:_cs_kr_1.' : */')
-call add (g:_mode_line_c_kr, '/* vim>702: set '.g:_cs_kr_73_0.' : */')
+call add (g:_mode_line_c_kr,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_kr_0, ":", "\\\\:", "g").
+    \ ' : */')
+call add (g:_mode_line_c_kr,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_kr_1, ":", "\\\\:", "g").
+    \ ' : */')
+call add (g:_mode_line_c_kr,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_kr_73_0, ":", "\\\\:", "g").
+    \ ' : */')
 
 function! s:ModeLineCLinux()
     normal G
@@ -414,8 +432,8 @@ function! s:ImportLicense(license_name)
 endfunction
 command! -nargs=1 L :call <SID>ImportLicense('<args>')
 
-autocmd Filetype gitcommit,config,sh,c,cpp,perl,markdown
-    \ :call <SID>SetKRCodeStyle()
+"autocmd Filetype gitcommit,config,sh,c,cpp,perl,markdown
+"    \ :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
 set sts=4 expandtab
