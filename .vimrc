@@ -1,4 +1,4 @@
-set nocompatible 
+set nocompatible
 
 "===================Tips========================="
 "==ctags=="
@@ -19,9 +19,9 @@ autocmd FileType c,cpp set tags+=./tags;/
 
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
-"regenerate ctags for current folder and recursively 
+"regenerate ctags for current folder and recursively
 "--extra=+q is for C++ to qualify member function/variable with its class
-"type. 
+"type.
 function! s:Cregen()
     execute ":!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q ."
 endfunction
@@ -87,7 +87,7 @@ set nobackup
 
 " no visual bell
 set novisualbell
-" No error bell 
+" No error bell
 set noerrorbells
 " No flash the screen on error
 set t_vb=
@@ -135,8 +135,6 @@ map <F5>    :syntax sync fromstart<CR>
 
 "indent issue
 filetype plugin indent on
-set smartindent
-set autoindent
 
 "set ts=4
 "set sts=4
@@ -155,7 +153,8 @@ function s:RemoveWhiteSpace()
     endif
     call setpos(".", save_cursor)
 endfunction
-autocmd Filetype xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
+autocmd Filetype vim,xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config
+    \ autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
 
 "soft colorcolumn, vim 7.3+ only, short cmd: set cc=78
 "set tw=78
@@ -181,7 +180,8 @@ set wildmode=longest,list
 set wildmenu
 
 map     <F12>   :set nohlsearch! hlsearch?<CR>
-map     <F9>    :set cursorline! cursorline? <CR> :set cursorcolumn! cursorcolumn?<CR>
+map     <F9>    :set cursorline! cursorline? <CR>
+              \ :set cursorcolumn! cursorcolumn?<CR>
 map     <F2>    :set nospell! spell?<CR>
 nnoremap <silent> <leader>n :set nonu! nu?<cr>
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
@@ -243,8 +243,6 @@ command Igpl :call <SID>InsertGPL()
 "endfunction
 "command! -nargs=1 Iyf :call <SID>InsertPythonFunction('<args>')
 
-"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 hi CursorLine   cterm=NONE ctermfg=white guibg=darkred guifg=white
 hi CursorColumn cterm=NONE ctermfg=white guibg=darkred guifg=white
 
@@ -257,12 +255,6 @@ endif
 set csverb
 set cscopetag
 set cscopequickfix=s-,g-,c-,d-,t-,e-,f-,i-
-
-"Persistent undo (vim 7.3+)
-"set undodir=~/.vim/undodir
-"set undofile
-"set undolevels=1000 "maximum number of changes that can be undone
-"set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
 "OmniCppComplete
 filetype plugin on
@@ -347,39 +339,62 @@ if &term == "screen" || &term == "xterm"
   set title
 endif
 
+let g:_cs_linux_0=
+    \ 'ts=8 sts=8 sw=8 tw=80 wrap noet'
+let g:_cs_linux_1=
+    \ 'cindent fo=tcqlron cino=:0,l1,t0,g0,(0'
+let g:_cs_linux_73_0=
+    \ 'cc=80'
+let g:_cs_linux=
+    \ g:_cs_linux_0.' '.
+    \ g:_cs_linux_1.' '.
+    \ g:_cs_linux_73_0
+
+let g:_mode_line_c_linux = [""]
+call add (g:_mode_line_c_linux, '/* vim: set '.g:_cs_linux_0.' : */')
+call add (g:_mode_line_c_linux, '/* vim: set '.g:_cs_linux_1.' : */')
+call add (g:_mode_line_c_linux, '/* vim>702: set '.g:_cs_linux_73_0.' : */')
+
+let g:_cs_kr_0 =
+    \ 'ts=8 sts=4 sw=4 tw=80 wrap et fo=tcroq'
+let g:_cs_kr_1 =
+    \ 'cindent cinoptions=(0,:0,l1,t0,L3'
+let g:_cs_kr_73_0  =
+    \ 'cc=80'
+let g:_cs_kr=
+    \ g:_cs_kr_0.' '.
+    \ g:_cs_kr_1.' '.
+    \ g:_cs_kr_73_0
+
+let g:_mode_line_c_kr = [""]
+call add (g:_mode_line_c_kr, '/* vim: set '.g:_cs_kr_0.' : */')
+call add (g:_mode_line_c_kr, '/* vim: set '.g:_cs_kr_1.' : */')
+call add (g:_mode_line_c_kr, '/* vim>702: set '.g:_cs_kr_73_0.' : */')
+
+function! s:ModeLineCLinux()
+    normal G
+    put = g:_mode_line_c_linux
+    let &modified = 1
+endfunction
+command Mcl :call <SID>ModeLineCLinux()
+
+function! s:ModeLineCKr()
+    normal G
+    put = g:_mode_line_c_kr
+    let &modified = 1
+endfunction
+command Mck :call <SID>ModeLineCKr()
+
+function! s:SetLinuxCodeStyle()
+    exec 'setlocal '.g:_cs_linux
+endfunction
+command Csl :call <SID>SetLinuxCodeStyle()
+
 function! s:SetKRCodeStyle()
-    setlocal autoindent
-    setlocal cindent
-    setlocal shiftwidth=4
-    setlocal cc=80 textwidth=80
-    setlocal expandtab
-    setlocal tabstop=8
-    setlocal softtabstop=4
-    setlocal cinoptions=(0,:0,l1,t0,L3
-    setlocal wrap
-    setlocal formatoptions=tcroq
+    exec 'setlocal '.g:_cs_kr
 endfunction
 command Csk :call <SID>SetKRCodeStyle()
 
-function! s:SetLinuxCodeStyle()
-    setlocal tabstop=8
-    setlocal softtabstop=8
-    setlocal shiftwidth=8
-    setlocal textwidth=80 cc=80
-    setlocal wrap
-    setlocal noexpandtab
-    setlocal cindent
-    setlocal formatoptions=tcqlron
-    setlocal cinoptions=:0,l1,t0,g0,(0
-    setlocal wildignore+=*.ko,*.mod.c,*.order,modules.builtin
-    syn keyword cOperator likely unlikely
-    syn keyword cType u8 u16 u32 u64 s8 s16 s32 s64
-    highlight default link LinuxError ErrorMsg
-    syn match LinuxError / \+\ze\t/     " spaces before tab
-    syn match LinuxError /\s\+$/        " trailing whitespaces
-    syn match LinuxError /\%81v.\+/     " virtual column 81 and more
-endfunction
-command Csl :call <SID>SetLinuxCodeStyle()
 
 function! s:SetGnuCodeStyle()
     setlocal cindent
@@ -399,8 +414,10 @@ function! s:ImportLicense(license_name)
 endfunction
 command! -nargs=1 L :call <SID>ImportLicense('<args>')
 
-autocmd Filetype gitcommit,config,sh,c,cpp,perl,markdown :call <SID>SetKRCodeStyle()
+autocmd Filetype gitcommit,config,sh,c,cpp,perl,markdown
+    \ :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
+set sts=4 expandtab
 
 autocmd VimLeave * call system("xclip -o | xclip -selection c")
