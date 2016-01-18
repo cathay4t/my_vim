@@ -389,6 +389,31 @@ call add (g:_mode_line_c_kr,
     \ substitute(g:_cs_kr_73_0, ":", "\\\\:", "g").
     \ ' : */')
 
+let g:_cs_gnu_0=
+    \ 'ts=2 sts=2 sw=2 tw=79 wrap et cindent fo=tcql'
+let g:_cs_gnu_1=
+    \ 'cino=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1'
+let g:_cs_gnu_73_0=
+    \ 'cc=79'
+let g:_cs_gnu=
+    \ g:_cs_gnu_0.' '.
+    \ g:_cs_gnu_1.' '.
+    \ g:_cs_gnu_73_0
+
+let g:_mode_line_c_gnu = [""]
+call add (g:_mode_line_c_gnu,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_gnu_0, ":", "\\\\:", "g").
+    \ ' : */')
+call add (g:_mode_line_c_gnu,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_gnu_1, ":", "\\\\:", "g").
+    \ ' : */')
+call add (g:_mode_line_c_gnu,
+    \ '/* vim: set '.
+    \ substitute(g:_cs_gnu_73_0, ":", "\\\\:", "g").
+    \ ' : */')
+
 function! s:ModeLineCLinux()
     normal G
     put = g:_mode_line_c_linux
@@ -403,6 +428,13 @@ function! s:ModeLineCKr()
 endfunction
 command Mck :call <SID>ModeLineCKr()
 
+function! s:ModeLineCGNU()
+    normal G
+    put = g:_mode_line_c_gnu
+    let &modified = 1
+endfunction
+command Mcg :call <SID>ModeLineCGNU()
+
 function! s:SetLinuxCodeStyle()
     exec 'setlocal '.g:_cs_linux
 endfunction
@@ -413,18 +445,10 @@ function! s:SetKRCodeStyle()
 endfunction
 command Csk :call <SID>SetKRCodeStyle()
 
-
-function! s:SetGnuCodeStyle()
-    setlocal cindent
-    setlocal cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1
-    setlocal shiftwidth=2
-    setlocal softtabstop=2
-    setlocal expandtab
-    setlocal textwidth=79 cc=79
-    setlocal wrap
-    setlocal fo-=ro fo+=cql
+function! s:SetGNUCodeStyle()
+    exec 'setlocal '.g:_cs_gnu
 endfunction
-command Csg :call <SID>SetGnuCodeStyle()
+command Csg :call <SID>SetGNUCodeStyle()
 
 function! s:ImportLicense(license_name)
     let file_path="~/.vim/license/" . a:license_name . ".txt"
