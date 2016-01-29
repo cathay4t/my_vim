@@ -463,3 +463,10 @@ au BufRead,BufNewFile *.am setlocal noexpandtab
 set sts=4 expandtab cc=80
 
 autocmd VimLeave * call system("xclip -o | xclip -selection c")
+
+autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
+                        \ :call <SID>SetKRCodeStyle()
+autocmd BufRead,BufNewFile */storaged/*.[ch]\(pp\)\=
+                        \ :call <SID>SetGNUCodeStyle()
+autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
+                        \ :call <SID>SetLinuxCodeStyle()
