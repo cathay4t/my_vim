@@ -18,6 +18,7 @@ autocmd FileType c,cpp set tags+=./tags;/
 "alt-]  * open the definition in a vertical split
 
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+map <C-k> :exec(":!dict ".expand("<cword>") . "\|colorit")<CR>
 
 "regenerate ctags for current folder and recursively
 "--extra=+q is for C++ to qualify member function/variable with its class
@@ -463,6 +464,8 @@ au BufRead,BufNewFile *.am setlocal noexpandtab
 set sts=4 expandtab cc=80
 
 autocmd VimLeave * call system("xclip -o | xclip -selection c")
+
+au FileType c,cpp :call <SID>SetKRCodeStyle()
 
 autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
