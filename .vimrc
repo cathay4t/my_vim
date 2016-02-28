@@ -142,6 +142,10 @@ filetype plugin indent on
 "set tabstop=4
 "set shiftwidth=4
 "set expandtab
+"
+"hightlight whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
 
 "auto remove whitespace at the end of line before :w,
 "it also save email signiture spliter "-- "
@@ -185,7 +189,6 @@ map     <F9>    :set cursorline! cursorline? <CR>
               \ :set cursorcolumn! cursorcolumn?<CR>
 map     <F2>    :set nospell! spell?<CR>
 nnoremap <silent> <leader>n :set nonu! nu?<cr>
-nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
 nnoremap <silent> <leader>c :%y+<cr>
 vnoremap <silent> <leader>c "+y
