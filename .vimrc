@@ -160,6 +160,7 @@ function s:RemoveWhiteSpace()
 endfunction
 autocmd Filetype vim,xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config
     \ autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
+nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
 "soft colorcolumn, vim 7.3+ only, short cmd: set cc=78
 "set tw=78
