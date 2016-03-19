@@ -94,7 +94,7 @@ set noerrorbells
 set t_vb=
 
 " don't indent when pasting
-:set pastetoggle=<F1>
+set pastetoggle=<F1>
 
 " set backspace can remove indent and works
 set backspace=indent,eol,start
