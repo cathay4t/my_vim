@@ -192,6 +192,7 @@ map     <F2>    :set nospell! spell?<CR>
 nnoremap <silent> <leader>n :set nonu! nu?<cr>
 
 nnoremap <silent> <leader>c :%y+<cr>
+nnoremap <silent> <leader>v "+yiw<cr>
 vnoremap <silent> <leader>c "+y
 nnoremap <silent> <leader>p "+gP
 vnoremap <silent> <leader>p "+gP
