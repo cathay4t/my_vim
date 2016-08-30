@@ -10,10 +10,10 @@ set nocompatible
 "autocmd FileType cpp set tags+=~/.vim/tags/cpp
 "autocmd FileType cpp set tags+=~/.vim/tags/qt4
 "
+autocmd FileType c,cpp set tags+=./tags;/
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
 autocmd FileType c,cpp set tags+=~/.ctag_files/lsm_c
 autocmd FileType cpp set tags+=~/.ctag_files/qt5
-autocmd FileType c,cpp set tags+=./tags;/
 
 "alt-]  * open the definition in a vertical split
 
@@ -192,7 +192,7 @@ map     <F2>    :set nospell! spell?<CR>
 nnoremap <silent> <leader>n :set nonu! nu?<cr>
 
 nnoremap <silent> <leader>c :%y+<cr>
-nnoremap <silent> <leader>v "+yiw<cr>
+nnoremap <silent> <leader>i "+yiw<cr>
 vnoremap <silent> <leader>c "+y
 nnoremap <silent> <leader>p "+gP
 vnoremap <silent> <leader>p "+gP
@@ -470,7 +470,7 @@ set sts=4 expandtab cc=80
 
 autocmd VimLeave * call system("xclip -o | xclip -selection c")
 
-au FileType c,cpp :call <SID>SetKRCodeStyle()
+au FileType c,cpp :call <SID>SetLinuxCodeStyle()
 
 autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
@@ -478,3 +478,5 @@ autocmd BufRead,BufNewFile */storaged/*.[ch]\(pp\)\=
                         \ :call <SID>SetGNUCodeStyle()
 autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
+autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
+                        \ :call <SID>SetKRCodeStyle()
