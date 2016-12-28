@@ -1,6 +1,6 @@
 setlocal spell
-setlocal tw=70 
-setlocal cc=70 
+setlocal tw=78
+setlocal cc=78
 setlocal wrap
 setlocal expandtab
 setlocal tabstop=4
