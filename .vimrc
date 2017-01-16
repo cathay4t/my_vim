@@ -480,3 +480,5 @@ autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
 autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
+
+set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
