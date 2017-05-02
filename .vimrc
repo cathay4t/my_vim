@@ -13,6 +13,7 @@ set nocompatible
 autocmd FileType c,cpp set tags+=./tags;/
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
 autocmd FileType c,cpp set tags+=~/.ctag_files/lsm_c
+autocmd FileType c set tags+=~/.ctag_files/linux_c
 autocmd FileType cpp set tags+=~/.ctag_files/qt5
 
 "alt-]  * open the definition in a vertical split
@@ -135,6 +136,7 @@ map <F5>    :syntax sync fromstart<CR>
 "autocmd Filetype config,sh,perl,c,cpp autocmd BufWinEnter ?* silent loadview
 
 "indent issue
+filetype on
 filetype plugin indent on
 
 "set ts=4
@@ -466,15 +468,15 @@ command! -nargs=1 L :call <SID>ImportLicense('<args>')
 "    \ :call <SID>SetKRCodeStyle()
 au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
-set sts=4 expandtab cc=80 shiftwidth=4
+setlocal sts=4 expandtab cc=80 shiftwidth=4
 
-autocmd VimLeave * call system("xclip -o | xclip -selection c")
+"autocmd VimLeave * call system("xclip -o | xclip -selection c")
 
 au FileType c,cpp :call <SID>SetLinuxCodeStyle()
 
 autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
-autocmd BufRead,BufNewFile */storaged/*.[ch]\(pp\)\=
+autocmd BufRead,BufNewFile */udisks/*.[ch]
                         \ :call <SID>SetGNUCodeStyle()
 autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
@@ -482,3 +484,6 @@ autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
+
+" Auto update title string
+set titlestring=%t
