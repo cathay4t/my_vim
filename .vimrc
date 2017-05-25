@@ -342,7 +342,7 @@ endfunction
 "autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
-let &titlestring = expand("%:t")
+autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 if &term == "screen" || &term == "xterm"
   set title
 endif
