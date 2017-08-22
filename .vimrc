@@ -12,9 +12,7 @@ set nocompatible
 "
 autocmd FileType c,cpp set tags+=./tags;/
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
-autocmd FileType c,cpp set tags+=~/.ctag_files/lsm_c
 autocmd FileType c set tags+=~/.ctag_files/linux_c
-autocmd FileType cpp set tags+=~/.ctag_files/qt5
 
 "alt-]  * open the definition in a vertical split
 
@@ -116,6 +114,8 @@ set mouse=a
 
 " color theme
 set t_Co=256
+
+set autoindent		" always set autoindenting on
 
 set background=light
 
@@ -250,6 +250,16 @@ command Igpl :call <SID>InsertGPL()
 "    normal 4jw
 "endfunction
 "command! -nargs=1 Iyf :call <SID>InsertPythonFunction('<args>')
+
+function! s:InsertCNVMeDocument(args)
+    let save_cursor = getpos(".")
+    let codes=system("~/.vim/script/nvme_doc.py " . shellescape(a:args))
+    call append(".",split(codes,"\n"))
+    normal 
+    call setpos(".", save_cursor)
+    normal 4jw
+endfunction
+command! -nargs=+ Icd :call <SID>InsertCNVMeDocument(<q-args>)
 
 hi CursorLine   cterm=NONE ctermfg=white guibg=darkred guifg=white
 hi CursorColumn cterm=NONE ctermfg=white guibg=darkred guifg=white
@@ -485,33 +495,12 @@ autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
 
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 
-
-" Vundle
-" required by vundle
-"filetype off
-
-" set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-"Plugin 'VundleVim/Vundle.vim'
-
-"Plugin 'rust-lang/rust.vim'
-
-" All of your Plugins must be added before the following line
-"call vundle#end()            " required
-"filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" When editing a file, always jump to the last known cursor position.
+" Don't do it when the position is invalid or when inside an event handler
+" (happens when dropping a file on gvim).
+" Also don't do it when the mark is in the first line, that is the default
+" position when opening a file.
+autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
