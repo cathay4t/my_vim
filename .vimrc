@@ -12,7 +12,6 @@ set nocompatible
 "
 autocmd FileType c,cpp set tags+=./tags;/
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
-autocmd FileType c set tags+=~/.ctag_files/linux_c
 
 "alt-]  * open the definition in a vertical split
 
@@ -500,7 +499,7 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 " (happens when dropping a file on gvim).
 " Also don't do it when the mark is in the first line, that is the default
 " position when opening a file.
-autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+"autocmd BufReadPost *
+"    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+"    \   exe "normal! g`\"" |
+"    \ endif
