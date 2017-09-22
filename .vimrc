@@ -104,9 +104,9 @@ set incsearch
 set nohlsearch
 
 " Enable mouse
-set mouse=a
+"set mouse=a
 " Disable mouse
-"set mouse=
+set mouse=
 
 " set clipbrad to system clipboard
 " set clipboard=unnamedplus
@@ -128,19 +128,19 @@ map <F5>    :syntax sync fromstart<CR>
 "  :20  :  up to 20 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-"set viminfo='10,\"100,:20,%,n~/.viminfo
+set viminfo='10,\"100,:20,%,n~/.viminfo
 
-"function! ResCur()
-"  if line("'\"") <= line("$")
-"    normal! g`"
-"    return 1
-"  endif
-"endfunction
-"
-"augroup resCur
-"  autocmd!
-"  autocmd BufWinEnter * call ResCur()
-"augroup END
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
 
 "indent issue
 filetype on
@@ -200,12 +200,23 @@ map     <F9>    :set cursorline! cursorline? <CR>
 map     <F2>    :set nospell! spell?<CR>
 nnoremap <silent> <leader>n :set nonu! nu?<cr>
 
-nnoremap <silent> <leader>c :%y+<cr>
-nnoremap <silent> <leader>i "+yiw<cr>
-vnoremap <silent> <leader>c "+y
-nnoremap <silent> <leader>p "+gP
-vnoremap <silent> <leader>p "+gP
-vnoremap <silent> <LeftRelease> "+y<LeftRelease>
+"nnoremap <silent> <leader>c :%y+<cr>
+"nnoremap <silent> <leader>i "+yiw<cr>
+"vnoremap <silent> <leader>c "+y
+"nnoremap <silent> <leader>p "+gP
+"vnoremap <silent> <leader>p "+gP
+"vnoremap <silent> <LeftRelease> "+y<LeftRelease>
+
+function! s:copy_visual_selection_to_xclip()
+  let [s:lnum1, s:col1] = getpos("'<")[1:2]
+  let [s:lnum2, s:col2] = getpos("'>")[1:2]
+  :exe ':silent'.s:lnum1.','.s:lnum2'w !xclip -selection c'
+endfunction
+
+nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
+vnoremap <silent> <leader>c :call <SID>copy_visual_selection_to_xclip()<cr>
+nnoremap <silent> <leader>p :-1r !xclip -o -selection c<cr>
+
 
 function! s:InsertLGPL()
     execute ":r ~/.vim/license/lgpl.txt"
@@ -272,14 +283,14 @@ hi CursorLine   cterm=NONE ctermfg=white guibg=darkred guifg=white
 hi CursorColumn cterm=NONE ctermfg=white guibg=darkred guifg=white
 
 "For cscope
-if filereadable("cscope.out")
-    cs add cscope.out
-elseif $CSCOPE_DB != ""
-    cs add $CSCOPE_DB
-endif
-set csverb
-set cscopetag
-set cscopequickfix=s-,g-,c-,d-,t-,e-,f-,i-
+"if filereadable("cscope.out")
+"    cs add cscope.out
+"elseif $CSCOPE_DB != ""
+"    cs add $CSCOPE_DB
+"endif
+"set csverb
+"set cscopetag
+"set cscopequickfix=s-,g-,c-,d-,t-,e-,f-,i-
 
 "OmniCppComplete
 filetype plugin on
@@ -346,12 +357,12 @@ autocmd Filetype perl,c,cpp,python,sh autocmd BufWritePre ?* :TlistUpdate
 " Markdown
 au BufRead,BufNewFile *.md set filetype=markdown
 
-function! s:UpdateKonsoleTab()
-    if expand("%:t") != '__Tag_List__'
-        execute ":silent !/home/fge/bin/update_konsole_tab set '%:t'"
-        execute ':redraw!'
-    endif
-endfunction
+"function! s:UpdateKonsoleTab()
+"    if expand("%:t") != '__Tag_List__'
+"        execute ":silent !/home/fge/bin/update_konsole_tab set '%:t'"
+"        execute ':redraw!'
+"    endif
+"endfunction
 
 " Update konsole tab with current edit filename
 "autocmd BufReadPost * :call <SID>UpdateKonsoleTab()
@@ -360,7 +371,7 @@ endfunction
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
 autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
-if &term == "screen" || &term == "xterm"
+if &term == "screen" || &term == "xterm" || &term == "xterm-256color"
   set title
 endif
 
