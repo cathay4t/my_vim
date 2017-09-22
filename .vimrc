@@ -214,6 +214,8 @@ function! s:copy_visual_selection_to_xclip()
 endfunction
 
 nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
+nnoremap <silent> <leader>i :call system("$HOME/.vim/bin/save2clip " .
+                                         \ expand('<cword>'))<cr>
 vnoremap <silent> <leader>c :call <SID>copy_visual_selection_to_xclip()<cr>
 nnoremap <silent> <leader>p :-1r !xclip -o -selection c<cr>
 
@@ -498,7 +500,7 @@ au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
 setlocal sts=4 expandtab cc=80 shiftwidth=4
 
-"autocmd VimLeave * call system("xclip -o | xclip -selection c")
+autocmd VimLeave * call system("xclip -o | xclip -selection c")
 
 au FileType c,cpp :call <SID>SetLinuxCodeStyle()
 
