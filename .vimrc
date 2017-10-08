@@ -35,7 +35,7 @@ nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 "Ctrl-v for a vertical block
 
 "==shortcuts=="
-"K	#jump to the manpage of it
+"K    #jump to the manpage of it
 "C-O #jump to last cursor location
 "C-i #jump to next cursor location
 "Toggle case 'HellO' to 'hELLo' with g~ then a movement.
@@ -114,7 +114,7 @@ set mouse=
 " color theme
 set t_Co=256
 
-set autoindent		" always set autoindenting on
+set autoindent        " always set autoindenting on
 
 set background=light
 
@@ -372,9 +372,14 @@ au BufRead,BufNewFile *.md set filetype=markdown
 "autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
-autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
-if &term == "screen" || &term == "xterm" || &term == "xterm-256color"
-  set title
+let &titlestring = ' ' . expand("%:t")
+if &term == "screen" || &term == "screen.xterm-256color"
+    set t_ts=k
+    set t_fs=\
+    set titleold=
+endif
+if &term == "screen.xterm-256color" || &term == "xterm" || &term == "xterm-256color"
+    set title
 endif
 
 let g:_cs_linux_0=
@@ -500,7 +505,7 @@ au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
 setlocal sts=4 expandtab cc=80 shiftwidth=4
 
-autocmd VimLeave * call system("xclip -o | xclip -selection c")
+"autocmd VimLeave * call system("xclip -o | xclip -selection c")
 
 au FileType c,cpp :call <SID>SetLinuxCodeStyle()
 
@@ -514,3 +519,7 @@ autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
+
+" vim's parenthesis highlighting causes screen corruption when vim is running
+" " inside GNU screen or tmux?
+let loaded_matchparen = 1
