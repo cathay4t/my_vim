@@ -372,7 +372,7 @@ au BufRead,BufNewFile *.md set filetype=markdown
 "autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
-let &titlestring = ' ' . expand("%:t")
+autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 if &term == "screen" || &term == "screen.xterm-256color"
     set t_ts=k
     set t_fs=\
@@ -380,6 +380,7 @@ if &term == "screen" || &term == "screen.xterm-256color"
 endif
 if &term == "screen.xterm-256color" || &term == "xterm" || &term == "xterm-256color"
     set title
+    set titleold=
 endif
 
 let g:_cs_linux_0=
