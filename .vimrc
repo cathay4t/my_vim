@@ -373,14 +373,14 @@ au BufRead,BufNewFile *.md set filetype=markdown
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
 autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
+set titleold=
 if &term == "screen" || &term == "screen.xterm-256color"
     set t_ts=k
     set t_fs=\
-    set titleold=
 endif
-if &term == "screen.xterm-256color" || &term == "xterm" || &term == "xterm-256color"
+if &term == "screen.xterm-256color" || &term == "xterm" ||
+    \ &term == "xterm-256color" || &term == "screen"
     set title
-    set titleold=
 endif
 
 let g:_cs_linux_0=
