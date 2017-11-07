@@ -524,3 +524,9 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 " vim's parenthesis highlighting causes screen corruption when vim is running
 " " inside GNU screen or tmux?
 let loaded_matchparen = 1
+
+" vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
+call plug#begin('~/.vim/plugged')
+Plug 'rust-lang/rust.vim'
+Plug 'vim-syntastic/syntastic'
+call plug#end()
