@@ -525,6 +525,17 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 " " inside GNU screen or tmux?
 let loaded_matchparen = 1
 
+
+" Syntastic syntax checker
+let g:syntastic_mode_map = {
+    \ "mode": "passive",
+    \ "active_filetypes": [],
+    \ "passive_filetypes": [] }
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_rust_checkers = ['cargo']
+nnoremap <silent> <leader>s :SyntasticCheck<cr>
+
 " vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
 call plug#begin('~/.vim/plugged')
 Plug 'rust-lang/rust.vim'
