@@ -536,6 +536,7 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_rust_checkers = ['cargo']
 nnoremap <silent> <leader>s :SyntasticCheck<cr>
+nnoremap <silent> <leader>S :SyntasticReset<cr>
 
 " vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
 call plug#begin('~/.vim/plugged')
