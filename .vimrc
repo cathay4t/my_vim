@@ -12,6 +12,7 @@ set nocompatible
 "
 autocmd FileType c,cpp set tags+=./tags;/
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
+autocmd FileType rust set tags+=./rusty-tags.vi;/
 
 "alt-]  * open the definition in a vertical split
 
@@ -167,7 +168,7 @@ function s:RemoveWhiteSpace()
     endif
     call setpos(".", save_cursor)
 endfunction
-autocmd Filetype vim,xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config
+autocmd Filetype vim,xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config,rust
     \ autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
