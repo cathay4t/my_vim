@@ -515,6 +515,8 @@ autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 autocmd BufRead,BufNewFile */udisks/*.[ch]
                         \ :call <SID>SetGNUCodeStyle()
+autocmd BufRead,BufNewFile */libblockdev/*.[ch]
+                        \ :call <SID>SetGNUCodeStyle()
 autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
 autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
@@ -537,6 +539,9 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_rust_checkers = ['cargo']
 nnoremap <silent> <leader>s :SyntasticCheck<cr>
 nnoremap <silent> <leader>S :SyntasticReset<cr>
+
+let g:rustfmt_autosave = 0
+nnoremap <silent> <leader>f :RustFmt<cr>
 
 " vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
 call plug#begin('~/.vim/plugged')
