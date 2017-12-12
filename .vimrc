@@ -179,7 +179,6 @@ if version >=703
     setlocal colorcolumn=78
 endif
 
-"set hard word wrap at 72 for email
 set wrap
 autocmd Filetype markdown,diff,gitcommit,c,cpp,python,perl setlocal spell
 
@@ -527,7 +526,6 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 " vim's parenthesis highlighting causes screen corruption when vim is running
 " " inside GNU screen or tmux?
 let loaded_matchparen = 1
-
 
 " Syntastic syntax checker
 let g:syntastic_mode_map = {
