@@ -17,7 +17,7 @@ autocmd FileType rust set tags+=./rusty-tags.vi;/
 "alt-]  * open the definition in a vertical split
 
 map <C-\> :vsp <CR>:exec("ts ".expand("<cword>"))<CR>
-map <C-]> :exec("ts ".expand("<cword>"))<CR>
+map <C-l> :exec("ts ".expand("<cword>"))<CR>
 map <C-k> :exec(":!dict ".expand("<cword>") . "\|colorit")<CR>
 
 "regenerate ctags for current folder and recursively
