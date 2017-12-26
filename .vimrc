@@ -5,7 +5,7 @@ set nocompatible
 "C-] - go to definition
 "C-T - Jump back from the definition.
 "C-W -> ] * Open the definition in a horizontal split
-":ta    - Search the tag
+":ts    - Search
 "ctags for cpp_std and qt cpp
 "autocmd FileType cpp set tags+=~/.vim/tags/cpp
 "autocmd FileType cpp set tags+=~/.vim/tags/qt4
@@ -16,7 +16,8 @@ autocmd FileType rust set tags+=./rusty-tags.vi;/
 
 "alt-]  * open the definition in a vertical split
 
-map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+map <C-\> :vsp <CR>:exec("ts ".expand("<cword>"))<CR>
+map <C-]> :exec("ts ".expand("<cword>"))<CR>
 map <C-k> :exec(":!dict ".expand("<cword>") . "\|colorit")<CR>
 
 "regenerate ctags for current folder and recursively
@@ -541,8 +542,12 @@ nnoremap <silent> <leader>S :SyntasticReset<cr>
 let g:rustfmt_autosave = 0
 nnoremap <silent> <leader>f :RustFmt<cr>
 
+" vim-markdown-toc
+command Toc :GenTocGFM
+
 " vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
 call plug#begin('~/.vim/plugged')
 Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
+Plug 'mzlogin/vim-markdown-toc'
 call plug#end()
