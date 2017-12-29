@@ -18,7 +18,6 @@ autocmd FileType rust set tags+=./rusty-tags.vi;/
 
 map <C-\> :vsp <CR>:exec("ts ".expand("<cword>"))<CR>
 map <C-l> :exec("ts ".expand("<cword>"))<CR>
-map <C-k> :exec(":!dict ".expand("<cword>") . "\|colorit")<CR>
 
 "regenerate ctags for current folder and recursively
 "--extra=+q is for C++ to qualify member function/variable with its class
