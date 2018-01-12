@@ -180,7 +180,7 @@ if version >=703
 endif
 
 set wrap
-autocmd Filetype markdown,diff,gitcommit,c,cpp,python,perl setlocal spell
+autocmd Filetype markdown,diff,gitcommit,c,cpp,python,perl,rust setlocal spell
 
 set nu
 " display tab as >-------
@@ -229,6 +229,16 @@ function! s:InsertGPL()
     execute ":r ~/.vim/license/gpl.txt"
 endfunction
 command Igpl :call <SID>InsertGPL()
+
+function! s:InsertMIT()
+    execute ":r ~/.vim/license/mit.txt"
+endfunction
+command Imit :call <SID>InsertMIT()
+
+function! s:InsertBSD()
+    execute ":r ~/.vim/license/bsd.txt"
+endfunction
+command Ibsd :call <SID>InsertBSD()
 
 "function! s:InsertConvertTimeStrPy()
 "    execute ":r ~/.vim/convert_time_str.py"
