@@ -518,8 +518,8 @@ setlocal sts=4 expandtab cc=80 shiftwidth=4
 
 "autocmd VimLeave * call system("xclip -o | xclip -selection c")
 
-au FileType c,cpp :call <SID>SetLinuxCodeStyle()
-
+autocmd BufRead,BufNewFile *.[ch]\(pp\)\=
+                        \ :call <SID>SetLinuxCodeStyle()
 autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 autocmd BufRead,BufNewFile */udisks/*.[ch]
