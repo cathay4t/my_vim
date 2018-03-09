@@ -121,7 +121,7 @@ set background=light
 
 " syntax highlighting
 syntax on
-map <F5>    :syntax sync fromstart<CR>
+map <F5>    :syntax sync fromstart <CR> :redraw!<CR>
 
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
