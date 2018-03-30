@@ -168,7 +168,7 @@ function s:RemoveWhiteSpace()
     endif
     call setpos(".", save_cursor)
 endfunction
-autocmd Filetype vim,xml,perl,c,cpp,python,sh,wiki,markdown,nroff,make,config,rust
+autocmd Filetype vim,xml,perl,python,sh,wiki,markdown,nroff,make,config,rust
     \ autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
@@ -382,7 +382,8 @@ au BufRead,BufNewFile *.md set filetype=markdown
 "autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
-autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
+"autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
+autocmd BufEnter * let &titlestring = "%-1.20F"
 set titleold=
 if &term == "screen" || &term == "screen.xterm-256color"
     set t_ts=k
