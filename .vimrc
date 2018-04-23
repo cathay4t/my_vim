@@ -168,7 +168,7 @@ function s:RemoveWhiteSpace()
     endif
     call setpos(".", save_cursor)
 endfunction
-autocmd Filetype vim,xml,perl,python,sh,wiki,markdown,nroff,make,config,rust
+autocmd Filetype vim,xml,perl,python,sh,wiki,markdown,nroff,make,config,rust,c,cpp
     \ autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
@@ -559,9 +559,17 @@ nnoremap <silent> <leader>f :RustFmt<cr>
 " vim-markdown-toc
 command Toc :GenTocGFM
 
+" vim-racer
+
+let g:racer_cmd = "/home/fge/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+au FileType rust nmap gd <Plug>(rust-def-split)
+au FileType rust nmap <leader>d <Plug>(rust-doc)
+
 " vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
 call plug#begin('~/.vim/plugged')
 Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'mzlogin/vim-markdown-toc'
+Plug 'racer-rust/vim-racer'
 call plug#end()
