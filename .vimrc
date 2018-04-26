@@ -78,6 +78,18 @@ nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 " zug   undo zg
 " to update spell after manual edit:
 " silent mkspell! ~/.vim/spell/en.utf-8.add
+"
+
+"Turn on omni completion
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+set completeopt=longest,menuone
+
+" The below mapping will change the behavior of the <Enter> key when the popup
+" menu is visible. In that case the Enter key will simply select the
+" highlighted menu item, just as <C-Y> does.
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <C-j> <C-x><C-o>
 
 " enable modline
 set modeline
