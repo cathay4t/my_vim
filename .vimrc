@@ -180,9 +180,11 @@ function s:RemoveWhiteSpace()
     endif
     call setpos(".", save_cursor)
 endfunction
-autocmd Filetype vim,xml,perl,python,sh,wiki,markdown,nroff,make,config,rust,c,cpp
-    \ autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
+"autocmd Filetype vim,xml,perl,python,sh,wiki,markdown,nroff,make,config,rust,c,cpp
+"    \ autocmd BufWritePre * :call <SID>RemoveWhiteSpace()
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
+
+nnoremap <silent> <leader>b ::<C-u>call gitblame#echo()<cr>
 
 "soft colorcolumn, vim 7.3+ only, short cmd: set cc=78
 "set tw=78
@@ -336,7 +338,7 @@ let Tlist_Show_One_File = 1
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_Use_Right_Window = 0
 let Tlist_Auto_Open=0
-let Tlist_WinWidth = 50
+let Tlist_WinWidth = 30
 let Tlist_Compact_Format = 1
 let Tlist_Enable_Fold_Column = 0
 command Tl TlistToggle
@@ -535,6 +537,8 @@ autocmd BufRead,BufNewFile *.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
 autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
+"autocmd BufRead,BufNewFile */NetworkManager/*.[ch]\(pp\)\=
+"                        \ :call <SID>SetKRCodeStyle()
 autocmd BufRead,BufNewFile */udisks/*.[ch]
                         \ :call <SID>SetGNUCodeStyle()
 autocmd BufRead,BufNewFile */libblockdev/*.[ch]
@@ -584,4 +588,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'racer-rust/vim-racer'
+Plug 'fatih/vim-go'
+Plug 'cespare/vim-toml'
+Plug 'zivyangll/git-blame.vim'
 call plug#end()
