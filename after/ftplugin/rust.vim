@@ -1,2 +1,2 @@
-setlocal textwidth=79
-setlocal cc=79
+setlocal textwidth=80
+setlocal cc=80
