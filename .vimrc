@@ -571,8 +571,11 @@ nnoremap <silent> <leader>S :SyntasticReset<cr>
 
 let g:rustfmt_autosave = 0
 autocmd FileType rust nnoremap <silent> <leader>f :RustFmt<cr>
+
+let g:black_linelength = 79
+let g:black_skip_string_normalization = 1
 autocmd FileType python nnoremap <silent> <leader>f :Black<cr>
-autocmd Filetype python autocmd BufWritePre ?* :Black
+"autocmd Filetype python autocmd BufWritePre ?* :Black
 
 " vim-markdown-toc
 command Toc :GenTocGFM
