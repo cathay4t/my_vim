@@ -570,7 +570,9 @@ nnoremap <silent> <leader>s :SyntasticCheck<cr>
 nnoremap <silent> <leader>S :SyntasticReset<cr>
 
 let g:rustfmt_autosave = 0
-nnoremap <silent> <leader>f :RustFmt<cr>
+autocmd FileType rust nnoremap <silent> <leader>f :RustFmt<cr>
+autocmd FileType python nnoremap <silent> <leader>f :Black<cr>
+autocmd Filetype python autocmd BufWritePre ?* :Black
 
 " vim-markdown-toc
 command Toc :GenTocGFM
@@ -591,4 +593,5 @@ Plug 'racer-rust/vim-racer'
 Plug 'fatih/vim-go'
 Plug 'cespare/vim-toml'
 Plug 'zivyangll/git-blame.vim'
+Plug 'python/black'
 call plug#end()
