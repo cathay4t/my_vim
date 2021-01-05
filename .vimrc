@@ -10,20 +10,17 @@ set nocompatible
 "autocmd FileType cpp set tags+=~/.vim/tags/cpp
 "autocmd FileType cpp set tags+=~/.vim/tags/qt4
 "
-autocmd FileType c,cpp set tags+=./tags;/
+autocmd FileType python,c,cpp,rust set tags+=./tags;/
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
-autocmd FileType rust set tags+=./rusty-tags.vi;/
+"autocmd FileType rust set tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 
 "alt-]  * open the definition in a vertical split
 
 map <C-\> :vsp <CR>:exec("ts ".expand("<cword>"))<CR>
 map <C-l> :exec("ts ".expand("<cword>"))<CR>
 
-"regenerate ctags for current folder and recursively
-"--extra=+q is for C++ to qualify member function/variable with its class
-"type.
 function! s:Cregen()
-    execute ":!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q ."
+    execute ":!cg"
 endfunction
 nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 
@@ -50,6 +47,9 @@ nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 "zR open all fold
 "zm fold one more level
 "zM clode all folds
+
+let g:xml_syntax_folding=1
+au FileType xml setlocal foldmethod=syntax
 
 "==cscope=="
 "0 or s: Find this C symbol
@@ -79,6 +79,10 @@ nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 " to update spell after manual edit:
 " silent mkspell! ~/.vim/spell/en.utf-8.add
 "
+set spell spelllang=en_us
+set nospell
+set spelllang+=cjk
+autocmd Filetype markdown,gitcommit,mail setlocal spell
 
 "Turn on omni completion
 filetype plugin on
@@ -124,15 +128,12 @@ set mouse=
 " set clipbrad to system clipboard
 " set clipboard=unnamedplus
 
-" color theme
-set t_Co=256
-
 set autoindent        " always set autoindenting on
-
-set background=light
 
 " syntax highlighting
 syntax on
+runtime color.vimrc
+
 map <F5>    :syntax sync fromstart <CR> :redraw!<CR>
 
 " Tell vim to remember certain things when we exit
@@ -194,7 +195,6 @@ if version >=703
 endif
 
 set wrap
-autocmd Filetype markdown,diff,gitcommit,c,cpp,python,perl,rust setlocal spell
 
 set nu
 " display tab as >-------
@@ -221,17 +221,23 @@ nnoremap <silent> <leader>n :set nonu! nu?<cr>
 "vnoremap <silent> <leader>p "+gP
 "vnoremap <silent> <LeftRelease> "+y<LeftRelease>
 
-function! s:copy_visual_selection_to_xclip()
+function! s:copy_visual_selection_to_clipbroad()
   let [s:lnum1, s:col1] = getpos("'<")[1:2]
   let [s:lnum2, s:col2] = getpos("'>")[1:2]
-  :exe ':silent'.s:lnum1.','.s:lnum2'w !xclip -selection c'
+"  :exe ':silent'.s:lnum1.','.s:lnum2'w !wl-copy'
+"  :exe ':silent'.s:lnum1.','.s:lnum2'w !xclip -selection c'
+  :exe ':silent'.s:lnum1.','.s:lnum2'w !copy2clip'
 endfunction
 
-nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
+"nnoremap <silent> <leader>c :silent w !wl-copy<cr>
+"nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
+nnoremap <silent> <leader>c :silent w !copy2clip<cr>
 nnoremap <silent> <leader>i :call system("$HOME/.vim/bin/save2clip " .
                                          \ expand('<cword>'))<cr>
-vnoremap <silent> <leader>c :call <SID>copy_visual_selection_to_xclip()<cr>
-nnoremap <silent> <leader>p :-1r !xclip -o -selection c<cr>
+vnoremap <silent> <leader>c :call <SID>copy_visual_selection_to_clipbroad()<cr>
+"nnoremap <silent> <leader>p :-1r !wl-paste<cr>
+"nnoremap <silent> <leader>p :-1r !xclip -o -selection c<cr>
+nnoremap <silent> <leader>p :-1r !paste2std<cr>
 
 
 function! s:InsertLGPL()
@@ -531,11 +537,13 @@ au FileType make setlocal noexpandtab
 au BufRead,BufNewFile *.am setlocal noexpandtab
 setlocal sts=4 expandtab cc=80 shiftwidth=4
 
-"autocmd VimLeave * call system("xclip -o | xclip -selection c")
+au FileType yaml setlocal ts=2 sts=2 sw=2
 
 autocmd BufRead,BufNewFile *.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
 autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
+                        \ :call <SID>SetKRCodeStyle()
+autocmd BufRead,BufNewFile */irksome-turtle/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 "autocmd BufRead,BufNewFile */NetworkManager/*.[ch]\(pp\)\=
 "                        \ :call <SID>SetKRCodeStyle()
@@ -547,33 +555,14 @@ autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
 autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
-autocmd BufRead,BufNewFile */nvme_debug/*.[ch]
-                        \ set tags+=~/.ctag_files/linux
-autocmd BufRead,BufNewFile */linux-stable/*.[ch]
-                        \ set tags+=~/.ctag_files/linux
 
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
-
-" vim's parenthesis highlighting causes screen corruption when vim is running
-" " inside GNU screen or tmux?
-let loaded_matchparen = 1
-
-" Syntastic syntax checker
-let g:syntastic_mode_map = {
-    \ "mode": "passive",
-    \ "active_filetypes": [],
-    \ "passive_filetypes": [] }
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_rust_checkers = ['cargo']
-nnoremap <silent> <leader>s :SyntasticCheck<cr>
-nnoremap <silent> <leader>S :SyntasticReset<cr>
 
 let g:rustfmt_autosave = 0
 autocmd FileType rust nnoremap <silent> <leader>f :RustFmt<cr>
 
 let g:black_linelength = 79
-let g:black_skip_string_normalization = 1
+let g:black_skip_string_normalization = 0
 autocmd FileType python nnoremap <silent> <leader>f :Black<cr>
 "autocmd Filetype python autocmd BufWritePre ?* :Black
 
@@ -588,13 +577,28 @@ au FileType rust nmap gd <Plug>(rust-def-split)
 au FileType rust nmap <leader>d <Plug>(rust-doc)
 
 " vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
+" PlugClean to remove unlisted plugin
 call plug#begin('~/.vim/plugged')
 Plug 'rust-lang/rust.vim'
-Plug 'vim-syntastic/syntastic'
 Plug 'mzlogin/vim-markdown-toc'
-Plug 'racer-rust/vim-racer'
-Plug 'fatih/vim-go'
+"Plug 'racer-rust/vim-racer'
 Plug 'cespare/vim-toml'
 Plug 'zivyangll/git-blame.vim'
-Plug 'python/black'
+
+" :set autoread for automatically reload
+
+let hostname = substitute(system('hostname'), '\n', '', '')
+
+if $USER != 'root' && hostname == "Gris-Laptop"
+"Plug 'psf/black', { 'tag': 'stable' }
+Plug 'psf/black'
+endif
 call plug#end()
+
+" wrap long lines without affecting short lines
+" :g/./ normal gqq
+
+autocmd BufRead,BufNewFile today.md setlocal cc=40
+autocmd BufRead,BufNewFile */network-roles/*.py :let g:black_linelength=88
+autocmd BufRead,BufNewFile */network-roles/*.py :setlocal cc=88
+autocmd BufRead,BufNewFile */network-roles/*.py :setlocal tw=88
