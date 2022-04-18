@@ -620,14 +620,14 @@ au FileType rust nmap <leader>d <Plug>(rust-doc)
 
 let hostname = substitute(system('hostname'), '\n', '', '')
 
-if $USER != 'root' && hostname == "Gris-Laptop"
+if $USER != 'root' && (hostname == "Gris-Laptop" || hostname == "Gris-NUC2")
 
 call plug#begin('~/.vim/plugged')
 Plug 'rust-lang/rust.vim'
 Plug 'mzlogin/vim-markdown-toc'
 "Plug 'racer-rust/vim-racer'
 Plug 'vim-syntastic/syntastic'
-Plug 'cespare/vim-toml'
+"Plug 'cespare/vim-toml'
 Plug 'zivyangll/git-blame.vim'
 Plug 'psf/black'
 Plug 'preservim/tagbar'
