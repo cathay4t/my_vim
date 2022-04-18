@@ -1,3 +1,4 @@
+
 set nocompatible
 
 "===================Tips========================="
@@ -11,8 +12,16 @@ set nocompatible
 "autocmd FileType cpp set tags+=~/.vim/tags/qt4
 "
 autocmd FileType python,c,cpp,rust set tags+=./tags;/
+"autocmd VimEnter *.rs :call <SID>dual_screen()
+"autocmd VimEnter *.py :call <SID>dual_screen()
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
 "autocmd FileType rust set tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
+
+function s:dual_screen()
+    if (winwidth(0) >= 160)
+        execute 'rightbelow vsplit' | wincmd b
+    endif
+endfunction
 
 "alt-]  * open the definition in a vertical split
 
@@ -48,8 +57,8 @@ nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 "zm fold one more level
 "zM clode all folds
 
-let g:xml_syntax_folding=1
-au FileType xml setlocal foldmethod=syntax
+"let g:xml_syntax_folding=1
+"au FileType xml setlocal foldmethod=syntax
 
 "==cscope=="
 "0 or s: Find this C symbol
@@ -82,7 +91,7 @@ au FileType xml setlocal foldmethod=syntax
 set spell spelllang=en_us
 set nospell
 set spelllang+=cjk
-autocmd Filetype markdown,gitcommit,mail setlocal spell
+autocmd Filetype markdown,gitcommit,mail,c,python,rust setlocal spell
 
 "Turn on omni completion
 filetype plugin on
@@ -125,9 +134,6 @@ set nohlsearch
 " Disable mouse
 set mouse=
 
-" set clipbrad to system clipboard
-" set clipboard=unnamedplus
-
 set autoindent        " always set autoindenting on
 
 " syntax highlighting
@@ -142,7 +148,7 @@ map <F5>    :syntax sync fromstart <CR> :redraw!<CR>
 "  :20  :  up to 20 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.viminfo
+"set viminfo='10,\"100,:20,%,n~/.viminfo
 
 function! ResCur()
   if line("'\"") <= line("$")
@@ -186,6 +192,16 @@ endfunction
 nnoremap <silent> <leader>w :call <SID>RemoveWhiteSpace()<cr>
 
 nnoremap <silent> <leader>b ::<C-u>call gitblame#echo()<cr>
+nnoremap <silent> <leader>m :call <SID>centor_window()<cr>
+
+function s:centor_window()
+    if (winnr("$") > 1)
+        only
+    else
+        execute 'topleft' ((&columns - &textwidth) / 2 - 1)
+                \. 'vsplit _paddding_' | wincmd p
+    endif
+endfunction
 
 "soft colorcolumn, vim 7.3+ only, short cmd: set cc=78
 "set tw=78
@@ -221,22 +237,20 @@ nnoremap <silent> <leader>n :set nonu! nu?<cr>
 "vnoremap <silent> <leader>p "+gP
 "vnoremap <silent> <LeftRelease> "+y<LeftRelease>
 
+" set clipbrad to system clipboard
 function! s:copy_visual_selection_to_clipbroad()
   let [s:lnum1, s:col1] = getpos("'<")[1:2]
   let [s:lnum2, s:col2] = getpos("'>")[1:2]
-"  :exe ':silent'.s:lnum1.','.s:lnum2'w !wl-copy'
-"  :exe ':silent'.s:lnum1.','.s:lnum2'w !xclip -selection c'
   :exe ':silent'.s:lnum1.','.s:lnum2'w !copy2clip'
 endfunction
 
-"nnoremap <silent> <leader>c :silent w !wl-copy<cr>
-"nnoremap <silent> <leader>c :silent w !xclip -selection c<cr>
-nnoremap <silent> <leader>c :silent w !copy2clip<cr>
+" below line only works with gvim where xterm_clipboard enabled
+"set clipboard=unnamedplus
+
 nnoremap <silent> <leader>i :call system("$HOME/.vim/bin/save2clip " .
                                          \ expand('<cword>'))<cr>
 vnoremap <silent> <leader>c :call <SID>copy_visual_selection_to_clipbroad()<cr>
-"nnoremap <silent> <leader>p :-1r !wl-paste<cr>
-"nnoremap <silent> <leader>p :-1r !xclip -o -selection c<cr>
+nnoremap <silent> <leader>c :silent w !copy2clip<cr>
 nnoremap <silent> <leader>p :-1r !paste2std<cr>
 
 
@@ -259,6 +273,11 @@ function! s:InsertBSD()
     execute ":r ~/.vim/license/bsd.txt"
 endfunction
 command Ibsd :call <SID>InsertBSD()
+
+function! s:InsertAp()
+    execute ":r ~/.vim/license/apache.txt"
+endfunction
+command Iap :call <SID>InsertAp()
 
 "function! s:InsertConvertTimeStrPy()
 "    execute ":r ~/.vim/convert_time_str.py"
@@ -325,31 +344,25 @@ hi CursorColumn cterm=NONE ctermfg=white guibg=darkred guifg=white
 "set cscopequickfix=s-,g-,c-,d-,t-,e-,f-,i-
 
 "OmniCppComplete
-filetype plugin on
-set ofu=syntaxcomplete#Complete
-let OmniCpp_NamespaceSearch = 1
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_ShowAccess = 1
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menuone,menu,longest,preview
+"filetype plugin on
+"set ofu=syntaxcomplete#Complete
+"let OmniCpp_NamespaceSearch = 1
+"let OmniCpp_GlobalScopeSearch = 1
+"let OmniCpp_ShowAccess = 1
+"let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+"let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+"let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+"let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+"let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+"" automatically open and close the popup menu / preview window
+"au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+"set completeopt=menuone,menu,longest,preview
 
-"taglist
-let Tlist_Show_One_File = 1
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Use_Right_Window = 0
-let Tlist_Auto_Open=0
-let Tlist_WinWidth = 30
-let Tlist_Compact_Format = 1
-let Tlist_Enable_Fold_Column = 0
-command Tl TlistToggle
-nnoremap <silent> <leader>t :TlistToggle<cr>
-autocmd Filetype perl,c,cpp,python,sh autocmd BufWritePre ?* :TlistUpdate
+"tagbar
+let g:tagbar_position = 'leftabove vertical'
+let g:tagbar_width = '40'
+let g:tagbar_hide_nonpublic = 1
+nnoremap <silent> <leader>t :TagbarToggle<cr>
 
 " DrawIt
 "   <left>       move and draw left
@@ -403,7 +416,12 @@ au BufRead,BufNewFile *.md set filetype=markdown
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
 "autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
-autocmd BufEnter * let &titlestring = "%-1.20F"
+augroup termTitle
+  au!
+    autocmd BufEnter * let &titlestring = "%-1.20F"
+  autocmd BufEnter * set title
+augroup END
+
 set titleold=
 if &term == "screen" || &term == "screen.xterm-256color"
     set t_ts=k
@@ -545,8 +563,10 @@ autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 autocmd BufRead,BufNewFile */irksome-turtle/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
-"autocmd BufRead,BufNewFile */NetworkManager/*.[ch]\(pp\)\=
-"                        \ :call <SID>SetKRCodeStyle()
+autocmd BufRead,BufNewFile */NetworkManager/*.[ch]\(pp\)\=
+                        \ :call <SID>SetGNUCodeStyle()
+autocmd BufRead,BufNewFile */NetworkManager/*.[ch]\(pp\)\=
+                        \ :setlocal cc=100
 autocmd BufRead,BufNewFile */udisks/*.[ch]
                         \ :call <SID>SetGNUCodeStyle()
 autocmd BufRead,BufNewFile */libblockdev/*.[ch]
@@ -555,11 +575,29 @@ autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
                         \ :call <SID>SetLinuxCodeStyle()
 autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
+autocmd BufRead,BufNewFile */fan2.txt :set cc=0
 
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 
 let g:rustfmt_autosave = 0
 autocmd FileType rust nnoremap <silent> <leader>f :RustFmt<cr>
+autocmd FileType rust nnoremap <silent> <leader>s :SyntasticCheck<cr>
+autocmd FileType rust nnoremap <silent> <leader>d :i <cr>
+autocmd FileType rust inoremap <leader>d {:?}
+autocmd FileType rust inoremap <leader>p println!("HAHA {:?}",
+let g:rustfmt_options = '--edition 2021'
+
+
+" syntac check
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = {
+    \ "mode": "passive",
+    \ "active_filetypes": [],
+    \ "passive_filetypes": [] }
+
 
 let g:black_linelength = 79
 let g:black_skip_string_normalization = 0
@@ -578,27 +616,35 @@ au FileType rust nmap <leader>d <Plug>(rust-doc)
 
 " vim-plugin. Use command `vim +PlugInstall` or `vim +PlugUpdate`.
 " PlugClean to remove unlisted plugin
-call plug#begin('~/.vim/plugged')
-Plug 'rust-lang/rust.vim'
-Plug 'mzlogin/vim-markdown-toc'
-"Plug 'racer-rust/vim-racer'
-Plug 'cespare/vim-toml'
-Plug 'zivyangll/git-blame.vim'
-
-" :set autoread for automatically reload
+" PlugUpgrade to upgrade vim-plugin itself
 
 let hostname = substitute(system('hostname'), '\n', '', '')
 
 if $USER != 'root' && hostname == "Gris-Laptop"
-"Plug 'psf/black', { 'tag': 'stable' }
+
+call plug#begin('~/.vim/plugged')
+Plug 'rust-lang/rust.vim'
+Plug 'mzlogin/vim-markdown-toc'
+"Plug 'racer-rust/vim-racer'
+Plug 'vim-syntastic/syntastic'
+Plug 'cespare/vim-toml'
+Plug 'zivyangll/git-blame.vim'
 Plug 'psf/black'
-endif
+Plug 'preservim/tagbar'
 call plug#end()
+
+endif
 
 " wrap long lines without affecting short lines
 " :g/./ normal gqq
 
-autocmd BufRead,BufNewFile today.md setlocal cc=40
+autocmd BufRead,BufNewFile today.md setlocal cc=100
 autocmd BufRead,BufNewFile */network-roles/*.py :let g:black_linelength=88
 autocmd BufRead,BufNewFile */network-roles/*.py :setlocal cc=88
 autocmd BufRead,BufNewFile */network-roles/*.py :setlocal tw=88
+autocmd BufRead,BufNewFile */netlink/*.rs :setlocal cc=100
+
+" Turn off color
+"set t_Co=0
+"highlight LineNr NONE
+"highlight CursorLine NONE
