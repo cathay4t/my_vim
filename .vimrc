@@ -12,8 +12,8 @@ set nocompatible
 "autocmd FileType cpp set tags+=~/.vim/tags/qt4
 "
 autocmd FileType python,c,cpp,rust set tags+=./tags;/
-"autocmd VimEnter *.rs :call <SID>dual_screen()
-"autocmd VimEnter *.py :call <SID>dual_screen()
+autocmd VimEnter *.rs :call <SID>dual_screen()
+autocmd VimEnter *.py :call <SID>dual_screen()
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
 "autocmd FileType rust set tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 
