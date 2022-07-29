@@ -415,21 +415,22 @@ au BufRead,BufNewFile *.md set filetype=markdown
 "autocmd VimLeavePre * :silent !/home/fge/bin/update_konsole_tab clean
 "nnoremap <silent> <leader>u :call <SID>UpdateKonsoleTab()<cr>
 
-"autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
-augroup termTitle
-  au!
-    autocmd BufEnter * let &titlestring = "%-1.20F"
-  autocmd BufEnter * set title
-augroup END
+"augroup termTitle
+"  au!
+"    autocmd BufEnter * let &titlestring = "%-1.20F"
+"  autocmd BufEnter * set title
+"augroup END
 
 set titleold=
 if &term == "screen" || &term == "screen.xterm-256color"
     set t_ts=k
     set t_fs=\
 endif
-if &term == "screen.xterm-256color" || &term == "xterm" ||
+
+if &term == "screen.xterm-256color" || &term == "alacritty" ||
     \ &term == "xterm-256color" || &term == "screen"
     set title
+    autocmd BufEnter * let &titlestring = hostname(). ": %f"
 endif
 
 let g:_cs_linux_0=
@@ -576,6 +577,7 @@ autocmd BufRead,BufNewFile */multipath-tools/*.[ch]\(pp\)\=
 autocmd BufRead,BufNewFile */leetcode_practise/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 autocmd BufRead,BufNewFile */fan2.txt :set cc=0
+autocmd BufRead,BufNewFile */fan.txt :set cc=0
 
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 
@@ -620,19 +622,21 @@ au FileType rust nmap <leader>d <Plug>(rust-doc)
 
 let hostname = substitute(system('hostname'), '\n', '', '')
 
-if $USER != 'root' && (hostname == "Gris-Laptop" || hostname == "Gris-NUC2")
+if $USER != 'root' &&
+    \(hostname == "Gris-Laptop" ||
+    \hostname == "Gris-NUC2" ||
+    \hostname == "Gris-WS")
 
-call plug#begin('~/.vim/plugged')
-Plug 'rust-lang/rust.vim'
-Plug 'mzlogin/vim-markdown-toc'
-"Plug 'racer-rust/vim-racer'
-Plug 'vim-syntastic/syntastic'
-"Plug 'cespare/vim-toml'
-Plug 'zivyangll/git-blame.vim'
-Plug 'psf/black'
-Plug 'preservim/tagbar'
-call plug#end()
-
+    call plug#begin('~/.vim/plugged')
+    Plug 'rust-lang/rust.vim'
+    Plug 'mzlogin/vim-markdown-toc'
+    "Plug 'racer-rust/vim-racer'
+    Plug 'vim-syntastic/syntastic'
+    "Plug 'cespare/vim-toml'
+    Plug 'zivyangll/git-blame.vim'
+    Plug 'psf/black'
+    Plug 'preservim/tagbar'
+    call plug#end()
 endif
 
 " wrap long lines without affecting short lines
