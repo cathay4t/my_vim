@@ -1,6 +1,8 @@
 
 set nocompatible
 
+nnoremap <silent> <leader>q :wqa<CR>
+
 "===================Tips========================="
 "==ctags=="
 "C-] - go to definition
@@ -14,6 +16,7 @@ set nocompatible
 autocmd FileType python,c,cpp,rust set tags+=./tags;/
 autocmd VimEnter *.rs :call <SID>dual_screen()
 autocmd VimEnter *.py :call <SID>dual_screen()
+autocmd VimEnter *.c :call <SID>dual_screen()
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
 "autocmd FileType rust set tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 
@@ -257,27 +260,29 @@ nnoremap <silent> <leader>p :-1r !paste2std<cr>
 function! s:InsertLGPL()
     execute ":r ~/.vim/license/lgpl.txt"
 endfunction
-command Ilgpl :call <SID>InsertLGPL()
+command Ilgpl :-1call <SID>InsertLGPL()
 
 function! s:InsertGPL()
-    execute ":r ~/.vim/license/gpl.txt"
+    execute ":-1r ~/.vim/license/gpl.txt"
 endfunction
 command Igpl :call <SID>InsertGPL()
 
 function! s:InsertMIT()
-    execute ":r ~/.vim/license/mit.txt"
+    execute ":-1r ~/.vim/license/mit.txt"
 endfunction
 command Imit :call <SID>InsertMIT()
 
 function! s:InsertBSD()
-    execute ":r ~/.vim/license/bsd.txt"
+    execute ":-1r ~/.vim/license/bsd.txt"
 endfunction
 command Ibsd :call <SID>InsertBSD()
 
 function! s:InsertAp()
-    execute ":r ~/.vim/license/apache.txt"
+    execute ":-1r ~/.vim/license/apache.txt"
 endfunction
 command Iap :call <SID>InsertAp()
+nnoremap <silent> <leader>a :call <SID>InsertAp()<cr>
+
 
 "function! s:InsertConvertTimeStrPy()
 "    execute ":r ~/.vim/convert_time_str.py"
@@ -430,7 +435,11 @@ endif
 if &term == "screen.xterm-256color" || &term == "alacritty" ||
     \ &term == "xterm-256color" || &term == "screen"
     set title
-    autocmd BufEnter * let &titlestring = hostname(). ": %f"
+    if len($SSH_TTY) == 0
+        autocmd BufEnter * let &titlestring = "%f"
+    else
+        autocmd BufEnter * let &titlestring = hostname(). ": %f"
+    endif
 endif
 
 let g:_cs_linux_0=
@@ -582,6 +591,7 @@ autocmd BufRead,BufNewFile */fan.txt :set cc=0
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 
 let g:rustfmt_autosave = 0
+let g:rustfmt_fail_silently = 0
 autocmd FileType rust nnoremap <silent> <leader>f :RustFmt<cr>
 autocmd FileType rust nnoremap <silent> <leader>s :SyntasticCheck<cr>
 autocmd FileType rust nnoremap <silent> <leader>d :i <cr>
