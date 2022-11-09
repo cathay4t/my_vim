@@ -432,13 +432,15 @@ if &term == "screen" || &term == "screen.xterm-256color"
     set t_fs=\
 endif
 
+let short_hostname=system('hostname -s')
+
 if &term == "screen.xterm-256color" || &term == "alacritty" ||
     \ &term == "xterm-256color" || &term == "screen"
     set title
     if len($SSH_TTY) == 0
         autocmd BufEnter * let &titlestring = "%f"
     else
-        autocmd BufEnter * let &titlestring = hostname(). ": %f"
+        autocmd BufEnter * let &titlestring = short_hostname . ": %f"
     endif
 endif
 
