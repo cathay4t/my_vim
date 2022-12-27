@@ -17,6 +17,9 @@ autocmd FileType python,c,cpp,rust set tags+=./tags;/
 autocmd VimEnter *.rs :call <SID>dual_screen()
 autocmd VimEnter *.py :call <SID>dual_screen()
 autocmd VimEnter *.c :call <SID>dual_screen()
+autocmd VimEnter *.md :call <SID>dual_screen()
+autocmd VimEnter *.yml :call <SID>dual_screen()
+autocmd VimEnter *.sh :call <SID>dual_screen()
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
 "autocmd FileType rust set tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 
@@ -34,7 +37,7 @@ map <C-l> :exec("ts ".expand("<cword>"))<CR>
 function! s:Cregen()
     execute ":!cg"
 endfunction
-nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
+"nnoremap <silent> <leader>g :call <SID>Cregen()<cr>
 
 "
 "==copy=="
@@ -282,6 +285,7 @@ function! s:InsertAp()
 endfunction
 command Iap :call <SID>InsertAp()
 nnoremap <silent> <leader>a :call <SID>InsertAp()<cr>
+nnoremap <silent> <leader>m :call <SID>InsertMIT()<cr>
 
 
 "function! s:InsertConvertTimeStrPy()
