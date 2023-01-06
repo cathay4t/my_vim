@@ -1,7 +1,7 @@
 
 set nocompatible
 
-nnoremap <silent> <leader>q :wqa<CR>
+nnoremap <silent> <leader>q :qa<CR>
 
 "===================Tips========================="
 "==ctags=="
@@ -287,58 +287,6 @@ command Iap :call <SID>InsertAp()
 nnoremap <silent> <leader>a :call <SID>InsertAp()<cr>
 nnoremap <silent> <leader>m :call <SID>InsertMIT()<cr>
 
-
-"function! s:InsertConvertTimeStrPy()
-"    execute ":r ~/.vim/convert_time_str.py"
-"endfunction
-"command Icts :call <SID>InsertConvertTimeStrPy()
-"
-"function! s:InsertReadConfigPy()
-"    execute ":r ~/.vim/read_conf.py"
-"endfunction
-"command Irc :call <SID>InsertReadConfigPy()
-"
-"function! s:InsertPersonalHeader()
-"    execute ":r ~/.vim/personal_header.sh"
-"endfunction
-"command Iph :call <SID>InsertPersonalHeader()
-"
-"function! s:InsertPersonalHeaderC()
-"    execute ":r ~/.vim/personal_header.c"
-"endfunction
-"command Iphc :call <SID>InsertPersonalHeaderC()
-"
-"function! s:InsertBashFunction(function_name)
-"    let save_cursor = getpos(".")
-"    let codes=system("sed -e s/FunctionName/"
-"        \. shellescape(a:function_name)
-"        \. "/g ~/.vim/function_sample.sh")
-"    call append(".",split(codes,"\n"))
-"    normal 
-"    call setpos(".", save_cursor)
-"    normal 4jw
-"endfunction
-"command! -nargs=1 Ibf :call <SID>InsertBashFunction('<args>')
-"
-"function! s:InsertPythonFunction(function_name)
-"    let codes=system("sed -e s/FunctionName/"
-"        \. shellescape(a:function_name)
-"        \. "/g ~/.vim/template/function_sample.py")
-"    call append(".",split(codes,"\n"))
-"    normal 4jw
-"endfunction
-"command! -nargs=1 Iyf :call <SID>InsertPythonFunction('<args>')
-
-function! s:InsertCNVMeDocument(args)
-    let save_cursor = getpos(".")
-    let codes=system("~/.vim/script/nvme_doc.py " . shellescape(a:args))
-    call append(".",split(codes,"\n"))
-    normal 
-    call setpos(".", save_cursor)
-    normal 4jw
-endfunction
-command! -nargs=+ Icd :call <SID>InsertCNVMeDocument(<q-args>)
-
 hi CursorLine   cterm=NONE ctermfg=white guibg=darkred guifg=white
 hi CursorColumn cterm=NONE ctermfg=white guibg=darkred guifg=white
 
@@ -372,41 +320,6 @@ let g:tagbar_position = 'leftabove vertical'
 let g:tagbar_width = '40'
 let g:tagbar_hide_nonpublic = 1
 nnoremap <silent> <leader>t :TagbarToggle<cr>
-
-" DrawIt
-"   <left>       move and draw left
-"   <right>      move and draw right, inserting lines/space as needed
-"   <up>         move and draw up, inserting lines/space as needed
-"   <down>       move and draw down, inserting lines/space as needed
-"   <s-left>     move left
-"   <s-right>    move right, inserting lines/space as needed
-"   <s-up>       move up, inserting lines/space as needed
-"   <s-down>     move down, inserting lines/space as needed
-"   <space>      toggle into and out of erase mode
-"   >            draw -> arrow
-"   <            draw <- arrow
-"   ^            draw ^  arrow
-"   v            draw v  arrow
-"   <pgdn>       replace with a \, move down and right, and insert a \
-"   <end>        replace with a /, move down and left,  and insert a /
-"   <pgup>       replace with a /, move up   and right, and insert a /
-"   <home>       replace with a \, move up   and left,  and insert a \
-"   \>           draw fat -> arrow
-"   \<           draw fat <- arrow
-"   \^           draw fat ^  arrow
-"   \v           draw fat v  arrow
-"   \a           draw arrow based on corners of visual-block
-"   \b           draw box using visual-block selected region
-"   \e           draw an ellipse inside visual-block
-"   \f           fill a figure with some character
-"   \h           create a canvas for \a \b \e \l
-"   \l           draw line based on corners of visual block
-"   \s           adds spaces to canvas
-"   <leftmouse>  select visual block
-"<s-leftmouse>  drag and draw with current brush (register)
-"   \ra ... \rz  replace text with given brush/register
-"   \pa ...      like \ra ... \rz, except that blanks are considered
-"                to be transparent
 
 " Markdown
 au BufRead,BufNewFile *.md set filetype=markdown
@@ -654,6 +567,9 @@ if $USER != 'root' &&
     Plug 'preservim/tagbar'
     call plug#end()
 endif
+
+" disable the creation of .netrwhist
+let g:netrw_dirhistmax = 0
 
 " wrap long lines without affecting short lines
 " :g/./ normal gqq
