@@ -554,6 +554,7 @@ let hostname = substitute(system('hostname'), '\n', '', '')
 if $USER != 'root' &&
     \(hostname == "Gris-Laptop" ||
     \hostname == "Gris-NUC2" ||
+    \hostname == "Gris-NUC12" ||
     \hostname == "Gris-WS")
 
     call plug#begin('~/.vim/plugged')
