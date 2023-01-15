@@ -349,7 +349,7 @@ if &term == "screen" || &term == "screen.xterm-256color"
     set t_fs=\
 endif
 
-let short_hostname=system('hostname -s')
+let short_hostname = substitute(system('hostname -s'), '\n', '', '')
 
 if &term == "screen.xterm-256color" || &term == "alacritty" ||
     \ &term == "xterm-256color" || &term == "screen"
@@ -493,7 +493,7 @@ autocmd BufRead,BufNewFile */libstoragemgmt-code/*.[ch]\(pp\)\=
 autocmd BufRead,BufNewFile */irksome-turtle/*.[ch]\(pp\)\=
                         \ :call <SID>SetKRCodeStyle()
 autocmd BufRead,BufNewFile */NetworkManager/*.[ch]\(pp\)\=
-                        \ :call <SID>SetGNUCodeStyle()
+                        \ :call <SID>SetKRCodeStyle()
 autocmd BufRead,BufNewFile */NetworkManager/*.[ch]\(pp\)\=
                         \ :setlocal cc=100
 autocmd BufRead,BufNewFile */udisks/*.[ch]
