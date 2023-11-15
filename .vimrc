@@ -512,6 +512,7 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 let g:rustfmt_autosave = 0
 let g:rustfmt_fail_silently = 0
 autocmd FileType rust nnoremap <silent> <leader>f :RustFmt<cr>
+autocmd FileType go nnoremap <silent> <leader>f ::GoFmt<cr>
 autocmd FileType rust nnoremap <silent> <leader>s :SyntasticCheck<cr>
 autocmd FileType rust nnoremap <silent> <leader>d :i <cr>
 autocmd FileType rust inoremap <leader>d {:?}
@@ -566,6 +567,7 @@ if $USER != 'root' &&
     Plug 'zivyangll/git-blame.vim'
     Plug 'psf/black'
     Plug 'preservim/tagbar'
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     call plug#end()
 endif
 
@@ -580,6 +582,8 @@ autocmd BufRead,BufNewFile */network-roles/*.py :let g:black_linelength=88
 autocmd BufRead,BufNewFile */network-roles/*.py :setlocal cc=88
 autocmd BufRead,BufNewFile */network-roles/*.py :setlocal tw=88
 autocmd BufRead,BufNewFile */netlink/*.rs :setlocal cc=100
+
+let g:go_fmt_autosave = 0
 
 " Turn off color
 "set t_Co=0
