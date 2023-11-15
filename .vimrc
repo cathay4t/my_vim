@@ -568,7 +568,6 @@ if $USER != 'root' &&
     Plug 'zivyangll/git-blame.vim'
     Plug 'psf/black'
     Plug 'preservim/tagbar'
-    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     call plug#end()
 endif
 
@@ -584,7 +583,7 @@ autocmd BufRead,BufNewFile */network-roles/*.py :setlocal cc=88
 autocmd BufRead,BufNewFile */network-roles/*.py :setlocal tw=88
 "autocmd BufRead,BufNewFile */netlink/*.rs :setlocal cc=100
 
-let g:go_fmt_autosave = 0
+"let g:go_fmt_autosave = 0
 
 " Turn off color
 "set t_Co=0
