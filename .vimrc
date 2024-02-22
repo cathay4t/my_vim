@@ -509,9 +509,11 @@ let g:rustfmt_autosave = 0
 let g:rustfmt_fail_silently = 0
 autocmd FileType rust nnoremap <silent> <leader>f :RustFmt<cr>
 autocmd FileType go nnoremap <silent> <leader>f ::GoFmt<cr>
+autocmd FileType go :call <SID>SetLinuxCodeStyle()
 autocmd FileType rust nnoremap <silent> <leader>s :SyntasticCheck<cr>
 autocmd FileType rust nnoremap <silent> <leader>d :i <cr>
 autocmd FileType rust inoremap <leader>d {:?}
+autocmd FileType c inoremap <leader>p fprintf(stderr, "HAHA\n");
 autocmd FileType rust inoremap <leader>p println!("HAHA {:?}",
 autocmd FileType python inoremap <leader>p print("HAHA ",
 let g:rustfmt_options = '--edition 2021'
@@ -528,7 +530,7 @@ let g:syntastic_mode_map = {
     \ "passive_filetypes": [] }
 
 
-"let g:black_linelength = 80
+let g:black_linelength = 80
 let g:black_skip_string_normalization = 0
 autocmd FileType python nnoremap <silent> <leader>f :Black<cr>
 "autocmd Filetype python autocmd BufWritePre ?* :Black
@@ -564,6 +566,7 @@ if $USER != 'root' &&
     Plug 'zivyangll/git-blame.vim'
     Plug 'psf/black'
     Plug 'preservim/tagbar'
+    Plug 'fatih/vim-go'
     call plug#end()
 endif
 
@@ -579,7 +582,7 @@ autocmd BufRead,BufNewFile */network-roles/*.py :setlocal cc=88
 autocmd BufRead,BufNewFile */network-roles/*.py :setlocal tw=88
 "autocmd BufRead,BufNewFile */netlink/*.rs :setlocal cc=100
 
-"let g:go_fmt_autosave = 0
+let g:go_fmt_autosave = 0
 
 " Turn off color
 "set t_Co=0
