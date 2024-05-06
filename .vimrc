@@ -20,6 +20,7 @@ autocmd VimEnter *.c :call <SID>dual_screen()
 "autocmd VimEnter *.md :call <SID>dual_screen()
 autocmd VimEnter *.yml :call <SID>dual_screen()
 autocmd VimEnter *.sh :call <SID>dual_screen()
+autocmd VimEnter *.log set cc=0
 autocmd FileType c,cpp set tags+=~/.ctag_files/system_c
 "autocmd FileType rust set tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 
@@ -183,14 +184,9 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 
 "auto remove whitespace at the end of line before :w,
-"it also save email signiture spliter "-- "
 function s:RemoveWhiteSpace()
     let save_cursor = getpos(".")
     %s/\s\+$//e
-    if &filetype == 'mail'
-        %s/^--$/-- /e
-        %s/^> --$/> -- /e
-    endif
     call setpos(".", save_cursor)
 endfunction
 "autocmd Filetype vim,xml,perl,python,sh,wiki,markdown,nroff,make,config,rust,c,cpp
