@@ -345,7 +345,7 @@ if &term == "screen" || &term == "screen.xterm-256color"
     set t_fs=\
 endif
 
-let short_hostname = substitute(system('hostname -s'), '\n', '', '')
+let short_hostname = substitute(system('echo -n $HOSTNAME'), 'Gris-', '', '')
 
 if &term == "screen.xterm-256color" || &term == "alacritty" ||
     \ &term == "xterm-256color" || &term == "screen"
@@ -353,7 +353,7 @@ if &term == "screen.xterm-256color" || &term == "alacritty" ||
     if len($SSH_TTY) == 0
         autocmd BufEnter * let &titlestring = "%f"
     else
-        autocmd BufEnter * let &titlestring = short_hostname . ": %f"
+        autocmd BufEnter * let &titlestring = short_hostname . ":%f"
     endif
 endif
 
@@ -553,8 +553,6 @@ let hostname = substitute(system('hostname'), '\n', '', '')
 
 if $USER != 'root' &&
     \(hostname == "Gris-Laptop" ||
-    \hostname == "Gris-NUC2" ||
-    \hostname == "Gris-NUC12" ||
     \hostname == "Gris-WS")
 
     call plug#begin('~/.vim/plugged')
