@@ -516,7 +516,7 @@ autocmd FileType rust inoremap <leader>d {:?}
 autocmd FileType c inoremap <leader>p fprintf(stderr, "HAHA\n");
 autocmd FileType rust inoremap <leader>p println!("HAHA {:?}",
 autocmd FileType python inoremap <leader>p print("HAHA ",
-let g:rustfmt_options = '--edition 2021'
+"let g:rustfmt_options = '--edition 2021'
 
 
 " syntac check
